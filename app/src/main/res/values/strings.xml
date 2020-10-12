@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">ReminderApp</string>
+    <string name="work">Work</string>
+    <string name="hobby">Hobby</string>
+    <string name="education">Education</string>
+    <string name="sport">Sport</string>
+    <string name="pet">Pet</string>
+    <string name="family">Family</string>
+    <string name="other">Other</string>
 </resources>
