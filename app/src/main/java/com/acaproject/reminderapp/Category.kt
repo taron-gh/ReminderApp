@@ -19,7 +19,6 @@ class Category(){
                 context!!,
                 Database::class.java, "all"
             ).build()
-
         }
         val TASK_COMPLETED = 1
         val TASK_RUNNING = 2
