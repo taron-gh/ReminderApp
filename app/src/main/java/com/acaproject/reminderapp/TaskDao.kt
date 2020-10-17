@@ -6,22 +6,22 @@ import androidx.room.*
 interface TaskDao {
 
     @Query("SELECT * FROM task_table")
-    suspend fun getAllTasks(): List<Category.Task>
+    suspend fun getAllTasks(): List<Task>
 
     @Transaction
     @Query("SELECT * FROM task_table WHERE dayOfWeek = :day")
-    suspend fun getTodayTasks(day: Int): List<Category.Task>
+    suspend fun getTodayTasks(day: Int): List<Task>
 
     @Transaction
     @Query("SELECT * FROM task_table WHERE category = :category")
-    suspend fun getTasks(category: String): List<Category.Task>
+    suspend fun getTasks(category: String): List<Task>
 
     @Insert
-    suspend fun insertTask(task: Category.Task)
+    suspend fun insertTask(task: Task)
 
     @Update
-    suspend fun updateTask(task: Category.Task)
+    suspend fun updateTask(task: Task)
 
     @Delete
-    suspend fun removeTask(task: Category.Task)
+    suspend fun removeTask(task: Task)
 }
