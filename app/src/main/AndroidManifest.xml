@@ -9,6 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver android:name=".NotificationReceiver" />
+
         <service android:name=".NotificationService" />
 
         <activity android:name=".MainActivity">
