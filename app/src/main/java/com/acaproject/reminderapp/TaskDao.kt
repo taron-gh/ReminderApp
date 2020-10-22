@@ -16,6 +16,10 @@ interface TaskDao {
     @Query("SELECT * FROM task_table WHERE category = :category")
     suspend fun getTasks(category: String): List<Task>
 
+    @Transaction
+    @Query("SELECT * FROM task_table WHERE taskId = :id")
+    suspend fun getTask(id: Int): Task
+
     @Insert
     suspend fun insertTask(task: Task)
 

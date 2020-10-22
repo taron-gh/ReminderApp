@@ -45,6 +45,9 @@ object TaskManager {
     suspend  fun getTasks(stringId: Int): List<Task>? {
         return db.tasksDao().getTasks(context.getString(stringId));
     }
+    suspend fun getTask(id: Int): Task{
+        return db.tasksDao().getTask(id);
+    }
 
 }
 
@@ -52,13 +55,13 @@ object TaskManager {
 data class Task(
     @PrimaryKey(autoGenerate = true)
     var taskId: Long,
-    val name: String,
-    val category: String,
-    val description: String,
-    val hour: Int,
-    val minute: Int,
-    val dayOfWeek: Int,
-    val repeatable: Boolean,
-    val taskState: Int
+    var name: String,
+    var category: String,
+    var description: String,
+    var hour: Int,
+    var minute: Int,
+    var dayOfWeek: Int,
+    var repeatable: Boolean,
+    var taskState: Int
 )
 
