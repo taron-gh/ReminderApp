@@ -8,9 +8,9 @@ interface TaskDao {
     @Query("SELECT * FROM task_table")
     suspend fun getAllTasks(): List<Task>
 
-    @Transaction
-    @Query("SELECT * FROM task_table WHERE dayOfWeek = :day")
-    suspend fun getTodayTasks(day: Int): List<Task>
+//    @Transaction
+//    @Query("SELECT * FROM task_table WHERE dayOfWeek = :day")
+//    suspend fun getTodayTasks(day: Int): List<Task>
 
     @Transaction
     @Query("SELECT * FROM task_table WHERE category = :category")
@@ -18,7 +18,7 @@ interface TaskDao {
 
     @Transaction
     @Query("SELECT * FROM task_table WHERE taskId = :id")
-    suspend fun getTask(id: Int): Task
+    suspend fun getTask(id: Long): Task
 
     @Insert
     suspend fun insertTask(task: Task)

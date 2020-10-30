@@ -10,6 +10,7 @@ class ReminderApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         TaskManager.init(this)
+        Alarms.init(this)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_DEFAULT,

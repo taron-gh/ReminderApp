@@ -12,14 +12,14 @@ class NotificationReceiver : BroadcastReceiver() {
             context.startForegroundService(
                 Intent(context, NotificationService::class.java).putExtra(
                     "id",
-                    intent.getIntExtra("id", 0)
+                    intent.getLongExtra("id", 0)
                 )
             )
         } else {
             context.startService(
                 Intent(context, NotificationService::class.java).putExtra(
                     "id",
-                    intent.getIntExtra("id", 0)
+                    intent.getLongExtra("id", 0)
                 )
             )
         }

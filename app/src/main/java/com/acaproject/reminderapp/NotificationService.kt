@@ -9,38 +9,30 @@ import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import kotlinx.coroutines.*
+import java.util.*
 
 class NotificationService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val taskId  = intent?.getIntExtra("id", 0)
+        val taskId  = intent?.getLongExtra("id", 0)
         Log.i("Service", "onStartCommand")
         if (intent?.action == "done") {
             GlobalScope.launch {
                 withContext(Dispatchers.IO){
-                    val oldTask  = TaskManager.getTask(taskId!!)
-                    val newTask = oldTask
-                    newTask.taskState = TaskManager.TASK_COMPLETED
-                    TaskManager.updateTask(newTask)
+                    TaskManager.taskDone(taskId!!)
                     stopSelf()
                 }
             }
         }else if(intent?.action == "postpone"){
             GlobalScope.launch {
                 withContext(Dispatchers.IO){
-                    val oldTask  = TaskManager.getTask(taskId!!)
-                    val newTask = oldTask
-                    newTask.dayOfWeek++
-                    TaskManager.updateTask(newTask)
+                    TaskManager.taskPostpone(taskId!!)
                     stopSelf()
                 }
             }
         }else if(intent?.action == "cancel"){
             GlobalScope.launch {
                 withContext(Dispatchers.IO){
-                    val oldTask  = TaskManager.getTask(taskId!!)
-                    val newTask = oldTask
-                    newTask.dayOfWeek += 7;
-                    TaskManager.updateTask(newTask)
+                    TaskManager.taskCancel(taskId!!)
                     stopSelf()
                 }
             }

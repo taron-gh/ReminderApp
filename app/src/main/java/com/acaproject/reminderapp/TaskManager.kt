@@ -37,18 +37,69 @@ object TaskManager {
     suspend fun updateTask(task: Task) {
         db.tasksDao().updateTask(task)
     }
-
+    suspend fun resetAlarms(){
+        Alarms.restartAlarmsAfterReboot(db.tasksDao().getAllTasks() as MutableList<Task>)
+    }
     suspend fun getTodayTasks(): List<Task>? {
-        return db.tasksDao().getTodayTasks(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
+        val returnList: MutableList<Task> = db.tasksDao().getAllTasks() as MutableList<Task>
+        for(task in returnList){
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = task.currentTime
+            if(calendar.get(Calendar.DAY_OF_WEEK) != Calendar.getInstance().get(Calendar.DAY_OF_WEEK)){
+                returnList.remove(task)
+            }
+        }
+        return returnList
     }
 
     suspend  fun getTasks(stringId: Int): List<Task>? {
         return db.tasksDao().getTasks(context.getString(stringId));
     }
-    suspend fun getTask(id: Int): Task{
+    suspend fun getTask(id: Long): Task{
         return db.tasksDao().getTask(id);
     }
 
+    suspend fun taskDone(id: Long){
+        val oldTask  = getTask(id)
+        val newTask = oldTask
+        val calendar = Calendar.getInstance()
+        //Alarms.cancelAlarm(id)
+        calendar.timeInMillis = oldTask.originalTime
+        calendar.add(Calendar.DAY_OF_YEAR, 7)
+        newTask.currentTime = calendar.timeInMillis
+        newTask.originalTime = calendar.timeInMillis
+        newTask.taskState = TASK_COMPLETED
+        updateTask(newTask)
+    }
+
+    suspend fun taskPostpone(id: Long){
+        val oldTask  = getTask(id)
+        val newTask = oldTask
+        val currentCalendar = Calendar.getInstance()
+        val originalCalendar = Calendar.getInstance()
+        //Alarms.cancelAlarm(id)
+        currentCalendar.timeInMillis = oldTask.currentTime
+        originalCalendar.timeInMillis = oldTask.originalTime
+        currentCalendar.add(Calendar.DAY_OF_YEAR, 1)
+        if(currentCalendar.get(Calendar.DAY_OF_YEAR) != originalCalendar.get(Calendar.DAY_OF_YEAR)){
+            newTask.currentTime = currentCalendar.timeInMillis
+            newTask.taskState = TASK_POSTPONED
+            updateTask(newTask)
+        }
+    }
+
+    suspend fun taskCancel(id: Long){
+        val oldTask  = getTask(id)
+        val newTask = oldTask
+        val calendar = Calendar.getInstance()
+        //Alarms.cancelAlarm(id)
+        calendar.timeInMillis = oldTask.originalTime
+        calendar.add(Calendar.DAY_OF_YEAR, 7)
+        newTask.currentTime = calendar.timeInMillis
+        newTask.originalTime = calendar.timeInMillis
+        newTask.taskState = TASK_COMPLETED
+        updateTask(newTask)
+    }
 }
 
 @Entity(tableName = "task_table")
@@ -58,9 +109,8 @@ data class Task(
     var name: String,
     var category: String,
     var description: String,
-    var hour: Int,
-    var minute: Int,
-    var dayOfWeek: Int,
+    var originalTime: Long,
+    var currentTime: Long,
     var repeatable: Boolean,
     var taskState: Int
 )
