@@ -15,10 +15,19 @@ class NotificationService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val taskId  = intent?.getLongExtra("id", 0)
         Log.i("Service", "onStartCommand")
+        GlobalScope.launch {
+            withContext(Dispatchers.IO){
+                TaskManager.taskHit(taskId!!)
+            }
+        }
         if (intent?.action == "done") {
             GlobalScope.launch {
                 withContext(Dispatchers.IO){
-                    TaskManager.taskDone(taskId!!)
+                    if(TaskManager.getTask(taskId!!).postponed){
+                        TaskManager.taskPostponedDone(taskId)
+                    }else{
+                        TaskManager.taskCompletelyDone(taskId)
+                    }
                     stopSelf()
                 }
             }
@@ -32,7 +41,11 @@ class NotificationService : Service() {
         }else if(intent?.action == "cancel"){
             GlobalScope.launch {
                 withContext(Dispatchers.IO){
-                    TaskManager.taskCancel(taskId!!)
+                    if(TaskManager.getTask(taskId!!).postponed){
+                        TaskManager.taskPostponedCancel(taskId)
+                    }else{
+                        TaskManager.taskCompletelyCancel(taskId)
+                    }
                     stopSelf()
                 }
             }

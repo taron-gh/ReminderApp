@@ -5,6 +5,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 object Alarms {
@@ -35,6 +37,27 @@ object Alarms {
         }
     }
 
+    fun setPostponedAlarm(primaryKey: Long, timeInMillis: Long){
+        val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
+            addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
+            putExtra("id", primaryKey)
+        }
+        val pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                timeInMillis,
+                pendingIntent
+            )
+        }else{
+            alarmManager.setExact(
+                AlarmManager.RTC_WAKEUP,
+                timeInMillis,
+                pendingIntent
+            )
+        }
+    }
+
     fun cancelAlarm(primaryKey: Long){
         val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
             addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
@@ -44,9 +67,31 @@ object Alarms {
         alarmManager.cancel(pendingIntent)
     }
 
+    fun cancelPostponedAlarm(primaryKey: Long){
+        val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
+            addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
+            putExtra("id", primaryKey)
+        }
+        val pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0)
+        alarmManager.cancel(pendingIntent)
+    }
+
     fun restartAlarmsAfterReboot(tasks: MutableList<Task>){
         for(task in tasks){
             setAlarm(task.taskId, task.currentTime)
+            if(task.postponed){
+                val calendar: Calendar = Calendar.getInstance()
+                calendar.timeInMillis = task.currentTime
+                if(Calendar.getInstance().compareTo(calendar) > 0){
+                    setPostponedAlarm(task.taskId, task.currentTime)
+                }else{
+                    calendar.set(Calendar.DAY_OF_YEAR, Calendar.getInstance().get(Calendar.DAY_OF_YEAR))
+                    task.currentTime = calendar.timeInMillis
+                    GlobalScope.launch {
+                        TaskManager.updateTaskWithTime(task)
+                    }
+                }
+            }
         }
     }
 }
