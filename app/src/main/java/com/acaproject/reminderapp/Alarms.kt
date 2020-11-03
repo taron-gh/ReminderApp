@@ -16,7 +16,9 @@ object Alarms {
         context = context1
         alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     }
-    fun setAlarm(primaryKey: Long, timeInMillis: Long){
+    fun setAlarm(task: Task){
+        val primaryKey = task.taskId
+        val timeInMillis = task.currentTime
         val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
             addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
             putExtra("id", primaryKey)
@@ -37,7 +39,9 @@ object Alarms {
         }
     }
 
-    fun setPostponedAlarm(primaryKey: Long, timeInMillis: Long){
+    fun setPostponedAlarm(task: Task){
+        val primaryKey = task.taskId
+        val timeInMillis = task.currentTime
         val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
             addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
             putExtra("id", primaryKey)
@@ -58,7 +62,8 @@ object Alarms {
         }
     }
 
-    fun cancelAlarm(primaryKey: Long){
+    fun cancelAlarm(task: Task){
+        val primaryKey = task.taskId
         val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
             addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
             putExtra("id", primaryKey)
@@ -67,7 +72,8 @@ object Alarms {
         alarmManager.cancel(pendingIntent)
     }
 
-    fun cancelPostponedAlarm(primaryKey: Long){
+    fun cancelPostponedAlarm(task: Task){
+        val primaryKey = task.taskId
         val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
             addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
             putExtra("id", primaryKey)
@@ -78,12 +84,12 @@ object Alarms {
 
     fun restartAlarmsAfterReboot(tasks: MutableList<Task>){
         for(task in tasks){
-            setAlarm(task.taskId, task.currentTime)
+            setAlarm(task)
             if(task.postponed){
                 val calendar: Calendar = Calendar.getInstance()
                 calendar.timeInMillis = task.currentTime
                 if(Calendar.getInstance().compareTo(calendar) > 0){
-                    setPostponedAlarm(task.taskId, task.currentTime)
+                    setPostponedAlarm(task)
                 }else{
                     calendar.set(Calendar.DAY_OF_YEAR, Calendar.getInstance().get(Calendar.DAY_OF_YEAR))
                     task.currentTime = calendar.timeInMillis

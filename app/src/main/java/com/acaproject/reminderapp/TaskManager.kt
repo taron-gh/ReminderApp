@@ -1,17 +1,15 @@
 package com.acaproject.reminderapp
 
 import android.content.Context
-import androidx.room.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.time.DayOfWeek
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.Room
 import java.util.*
-import kotlin.collections.ArrayList
 
 object TaskManager {
     private lateinit var context: Context
     fun init(context1: Context) {
-        context = context1;
+        context = context1
     }
 
     private val db by lazy {
@@ -20,21 +18,21 @@ object TaskManager {
             Database::class.java, "all"
         ).build()
     }
-    val TASK_COMPLETED = 1
-    val TASK_RUNNING = 2
-    val TASK_SAFE_TO_DELETE = 3
-    val TASK_POSTPONED = 4
+    const val TASK_COMPLETED = 1
+    const val TASK_RUNNING = 2
+    const val TASK_SAFE_TO_DELETE = 3
+    const val TASK_POSTPONED = 4
 
     //*************Tasks Database**************
     suspend fun insertTask(task: Task) {
         db.tasksDao().insertTask(task)
-        Alarms.setAlarm(task.taskId, task.currentTime)
+        Alarms.setAlarm(task)
     }
 
     suspend fun removeTask(task: Task) {
         db.tasksDao().removeTask(task)
-        Alarms.cancelAlarm(task.taskId)
-        Alarms.cancelPostponedAlarm(task.taskId)
+        Alarms.cancelAlarm(task)
+        Alarms.cancelPostponedAlarm(task)
     }
 
     suspend fun updateTask(task: Task) {
@@ -43,11 +41,18 @@ object TaskManager {
 
     suspend fun updateTaskWithTime(task: Task){
         db.tasksDao().updateTask(task)
-        Alarms.cancelAlarm(task.taskId)
-        Alarms.cancelPostponedAlarm(task.taskId)
-        Alarms.setAlarm(task.taskId, task.originalTime)
-        if(task.taskState == TASK_POSTPONED){
-            Alarms.setPostponedAlarm(task.taskId, task.originalTime)
+        Alarms.cancelAlarm(task)
+        Alarms.cancelPostponedAlarm(task)
+        Alarms.setAlarm(task)
+        if(task.postponed){
+            val calendar: Calendar = Calendar.getInstance()
+            calendar.timeInMillis = task.currentTime
+            if(Calendar.getInstance().compareTo(calendar) < 0){
+                calendar.set(Calendar.DAY_OF_YEAR, Calendar.getInstance().get(Calendar.DAY_OF_YEAR))
+                task.currentTime = calendar.timeInMillis
+
+            }
+            Alarms.setPostponedAlarm(task)
         }
     }
 
@@ -68,101 +73,92 @@ object TaskManager {
     }
 
     suspend fun getTasks(stringId: Int): List<Task>? {
-        return db.tasksDao().getTasks(context.getString(stringId));
+        return db.tasksDao().getTasks(context.getString(stringId))
     }
 
     suspend fun getTask(id: Long): Task{
-        return db.tasksDao().getTask(id);
+        return db.tasksDao().getTask(id)
     }
 
     suspend fun taskCompletelyDone(id: Long){
-        val oldTask  = getTask(id)
-        val newTask = oldTask
+        val task  = getTask(id)
         val calendar = Calendar.getInstance()
-        //Alarms.cancelAlarm(id)
-        calendar.timeInMillis = oldTask.originalTime
+        calendar.timeInMillis = task.originalTime
         calendar.add(Calendar.DAY_OF_YEAR, 7)
-        newTask.currentTime = calendar.timeInMillis
-        newTask.originalTime = calendar.timeInMillis
-        newTask.taskState = TASK_COMPLETED
-        newTask.postponed = false
-        updateTaskWithTime(newTask)
+        task.currentTime = calendar.timeInMillis
+        task.originalTime = calendar.timeInMillis
+        task.taskState = TASK_COMPLETED
+        task.postponed = false
+        updateTaskWithTime(task)
     }
 
     suspend fun taskPostponedDone(id: Long){
-        val oldTask  = getTask(id)
-        val newTask = oldTask
-        newTask.currentTime = newTask.originalTime
-        newTask.taskState = TASK_RUNNING
-        newTask.postponed = false
-        updateTaskWithTime(newTask)
+        val task  = getTask(id)
+        task.currentTime = task.originalTime
+        task.taskState = TASK_RUNNING
+        task.postponed = false
+        updateTaskWithTime(task)
     }
 
     suspend fun taskPostpone(id: Long){
-        val oldTask  = getTask(id)
-        val newTask = oldTask
+        val task  = getTask(id)
         val currentCalendar = Calendar.getInstance()
         val originalCalendar = Calendar.getInstance()
-        currentCalendar.timeInMillis = oldTask.currentTime
-        originalCalendar.timeInMillis = oldTask.originalTime
+        currentCalendar.timeInMillis = task.currentTime
+        originalCalendar.timeInMillis = task.originalTime
         if(currentCalendar.get(Calendar.DAY_OF_YEAR) != originalCalendar.get(Calendar.DAY_OF_YEAR) &&
             Calendar.getInstance().compareTo(currentCalendar) > 0){
-            Alarms.setPostponedAlarm(newTask.taskId, newTask.currentTime)
-            newTask.taskState = TASK_POSTPONED
-            newTask.postponed = true
-            updateTaskWithTime(newTask)
+            Alarms.setPostponedAlarm(task)
+            task.taskState = TASK_POSTPONED
+            task.postponed = true
+            updateTaskWithTime(task)
         }else if(currentCalendar.get(Calendar.DAY_OF_YEAR) != originalCalendar.get(Calendar.DAY_OF_YEAR)){
             currentCalendar.set(Calendar.DAY_OF_YEAR, Calendar.getInstance().get(Calendar.DAY_OF_YEAR))
-            newTask.currentTime = currentCalendar.timeInMillis
-            newTask.taskState = TASK_POSTPONED
-            newTask.postponed = true
-            updateTaskWithTime(newTask)
+            task.currentTime = currentCalendar.timeInMillis
+            task.taskState = TASK_POSTPONED
+            task.postponed = true
+            updateTaskWithTime(task)
         }
     }
 
     suspend fun taskCompletelyCancel(id: Long){
-        val oldTask  = getTask(id)
-        val newTask = oldTask
+        val task  = getTask(id)
         val calendar = Calendar.getInstance()
-        //Alarms.cancelAlarm(id)
-        calendar.timeInMillis = oldTask.originalTime
+        calendar.timeInMillis = task.originalTime
         calendar.add(Calendar.DAY_OF_YEAR, 7)
-        newTask.currentTime = calendar.timeInMillis
-        newTask.originalTime = calendar.timeInMillis
-        newTask.taskState = TASK_COMPLETED
-        newTask.postponed = false
-        updateTaskWithTime(newTask)
+        task.currentTime = calendar.timeInMillis
+        task.originalTime = calendar.timeInMillis
+        task.taskState = TASK_COMPLETED
+        task.postponed = false
+        updateTaskWithTime(task)
     }
 
     suspend fun taskPostponedCancel(id: Long){
-        val oldTask  = getTask(id)
-        val newTask = oldTask
+        val task  = getTask(id)
         val calendar = Calendar.getInstance()
-        //Alarms.cancelAlarm(id)
-        calendar.timeInMillis = oldTask.originalTime
+        calendar.timeInMillis = task.originalTime
         calendar.add(Calendar.DAY_OF_YEAR, 7)
-        newTask.originalTime = calendar.timeInMillis
-        newTask.currentTime = newTask.originalTime
-        newTask.taskState = TASK_RUNNING
-        newTask.postponed = false
-        updateTaskWithTime(newTask)
+        task.originalTime = calendar.timeInMillis
+        task.currentTime = task.originalTime
+        task.taskState = TASK_RUNNING
+        task.postponed = false
+        updateTaskWithTime(task)
     }
 
     suspend fun taskHit(id: Long) {
-        val oldTask  = getTask(id)
-        if(oldTask.repeatable){
-            val newTask = oldTask
+        val task  = getTask(id)
+        if(task.repeatable){
             val calendar = Calendar.getInstance()
-            calendar.timeInMillis = oldTask.originalTime
+            calendar.timeInMillis = task.originalTime
             calendar.add(Calendar.DAY_OF_YEAR, 7)
-            newTask.currentTime = calendar.timeInMillis
-            newTask.originalTime = calendar.timeInMillis
-            newTask.taskState = TASK_COMPLETED
-            newTask.postponed = false
-            updateTaskWithTime(newTask)
+            task.currentTime = calendar.timeInMillis
+            task.originalTime = calendar.timeInMillis
+            task.taskState = TASK_COMPLETED
+            task.postponed = false
+            updateTaskWithTime(task)
         }else{
-            Alarms.cancelAlarm(oldTask.taskId)
-            Alarms.cancelPostponedAlarm(oldTask.taskId)
+            Alarms.cancelAlarm(task)
+            Alarms.cancelPostponedAlarm(task)
         }
 
 
