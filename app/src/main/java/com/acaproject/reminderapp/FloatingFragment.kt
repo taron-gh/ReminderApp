@@ -45,18 +45,18 @@ class FloatingFragment:Fragment() {
             val radioButtonID: Int = task_week.checkedRadioButtonId
             val dayOfWeek: RadioButton = task_week.findViewById(radioButtonID)
             val calendar: Calendar = Calendar.getInstance()
-            calendar.set(Calendar.AM_PM, )
-            val task = Task(
-                0,
-                task_name.text.toString(),
-                task_spinner.selectedItem.toString(),
-                task_description.text.toString(),
-                task_timePicker.hour,
-                task_timePicker.minute,
-                dayOfWeek.text.toString(),
-                task_checkBox.isChecked,
-                1
-            )
+//            calendar.set(Calendar.AM_PM, )
+//            val task = Task(
+//                0,
+//                task_name.text.toString(),
+//                task_spinner.selectedItem.toString(),
+//                task_description.text.toString(),
+//                task_timePicker.hour,
+//                task_timePicker.minute,
+//                dayOfWeek.text.toString(),
+//                task_checkBox.isChecked,
+//                1
+//            )
 
             GlobalScope.launch (Dispatchers.IO){
 

@@ -38,8 +38,8 @@ class TaskRecyclerAdapter(private val tasks: List<Task> = mutableListOf(), priva
 
         @SuppressLint("SetTextI18n")
         fun bind(task: Task, listener: OnTaskClickListener) {
-            taskTextView.text = task.name
-            dateTimeTextView.text = "${task.dayOfWeek} ${task.hour} ${task.minute}"
+//            taskTextView.text = task.name
+//            dateTimeTextView.text = "${task.dayOfWeek} ${task.hour} ${task.minute}"
 
             itemView.setOnClickListener {
                 listener.onItemClick(task)

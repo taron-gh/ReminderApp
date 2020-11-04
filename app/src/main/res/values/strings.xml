@@ -23,4 +23,7 @@
         <item name="saturday">Saturday</item>
         <item name="sunday">Sunday</item>
     </string-array>
+    <string name="back">Back</string>
+    <string name="category_menu">Category</string>
+    <string name="week_menu">Week</string>
 </resources>

@@ -19,6 +19,7 @@ interface FragmentControl {
     fun updateToolBar(title: String, hasBack: Boolean)
 
 }
+const val CHANNEL_DEFAULT = "channel"
 
 class MainActivity : AppCompatActivity(), FragmentControl {
     private val helpFragment = HelpFragment()
