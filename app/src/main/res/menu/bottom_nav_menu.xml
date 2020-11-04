@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/categoryMenu"
+        android:title="@string/category_menu"
+        android:icon="@drawable/category_icon"
+        />
+    <item android:id="@+id/weekMenu"
+        android:title="@string/week_menu"
+        android:icon="@drawable/week_icon"
+        />
+</menu>

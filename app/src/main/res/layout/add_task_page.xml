@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:gravity="center"
+    >
+
+    <Spinner
+        android:id="@+id/task_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:entries="@array/Categories" />
+
+    <EditText
+        android:id="@+id/task_name"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="Task name"
+        android:imeOptions="actionDone"
+        android:layout_below="@+id/task_spinner"/>
+
+    <TimePicker
+        android:id="@+id/task_timePicker"
+        android:layout_width="370dp"
+        android:layout_height="141dp"
+        android:layout_below="@+id/task_name"
+        android:layout_marginTop="20dp"
+        android:timePickerMode="spinner" />
+
+    <RadioGroup
+        android:id="@+id/task_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/task_timePicker"
+        android:layout_marginTop="20dp">
+        <RadioButton
+            android:id="@+id/monday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mon"/>
+
+        <RadioButton
+            android:id="@+id/tuesday"
+            android:text="Tue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <RadioButton
+            android:id="@+id/wednesday"
+            android:text="Wed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <RadioButton
+            android:id="@+id/thursday"
+            android:text="Thu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <RadioButton
+            android:id="@+id/friday"
+            android:text="Fri"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <RadioButton
+            android:id="@+id/saturday"
+            android:text="Sat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <RadioButton
+            android:id="@+id/sunday"
+            android:text="Sun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/task_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/task_week"
+        android:layout_marginTop="20dp"
+        android:hint="Task description"
+        />
+
+    <CheckBox
+        android:id="@+id/task_checkBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/task_description"
+        android:layout_marginTop="20dp"
+        android:text="I want my task to be repeatable"
+        />
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/task_checkBox"
+        android:layout_marginTop="20dp"
+        android:gravity="center">
+
+        <Button
+
+            android:id="@+id/task_cancelBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            />
+
+        <Button
+            android:id="@+id/task_okBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/task_checkBox"
+            android:text="Ok"
+            android:layout_marginLeft="30dp"
+
+            />
+    </LinearLayout>
+
+</RelativeLayout>
