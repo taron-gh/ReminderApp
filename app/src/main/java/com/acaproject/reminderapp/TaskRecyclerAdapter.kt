@@ -35,11 +35,11 @@ class TaskRecyclerAdapter(private val tasks: List<Task> = mutableListOf(), priva
 
         private val taskTextView: TextView = itemView.taskTextView
         private val dateTimeTextView: TextView = itemView.dateTimeTextView
-
         @SuppressLint("SetTextI18n")
         fun bind(task: Task, listener: OnTaskClickListener) {
             val calendar = Calendar.getInstance()
-            val daysOfWeek = listOf(R.string.sunday, R.string.monday, R.string.tuesday, R.string.wednesday, R.string.thursday, R.string.friday, R.string.saturday)
+            val context = itemView.context
+            val daysOfWeek = listOf(context.getString(R.string.sunday), context.getString(R.string.monday), context.getString(R.string.tuesday), context.getString(R.string.wednesday), context.getString(R.string.thursday), context.getString(R.string.friday), context.getString(R.string.saturday))
             calendar.timeInMillis = task.currentTime
             taskTextView.text = task.name
             dateTimeTextView.text = "${daysOfWeek[calendar.get(Calendar.DAY_OF_WEEK) - 1]} ${calendar.get(Calendar.HOUR_OF_DAY)} ${calendar.get(Calendar.MINUTE)}"
