@@ -15,15 +15,21 @@
         <item name="other">Other</item>
     </string-array>
     <string-array name="Week">
+        <item name="sunday">Sunday</item>
         <item name="monday">Monday</item>
         <item name="tuesday">Tuesday</item>
         <item name="wednesday">Wednesday</item>
         <item name="thursday">Thursday</item>
         <item name="friday">Friday</item>
         <item name="saturday">Saturday</item>
-        <item name="sunday">Sunday</item>
     </string-array>
-    <string name="back">Back</string>
+    <string name="sunday">Sunday</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
     <string name="category_menu">Category</string>
     <string name="week_menu">Week</string>
 </resources>
