@@ -31,9 +31,10 @@ class MainActivity : AppCompatActivity(), FragmentControl {
 
         setSupportActionBar(toolBar)
 
-
         val homeFragment = HomeFragment()
         openPage("Home", false, homeFragment)
+
+        floatingBtn()
 
     }
 

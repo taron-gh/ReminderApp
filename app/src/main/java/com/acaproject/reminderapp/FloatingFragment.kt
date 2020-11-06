@@ -1,24 +1,18 @@
 package com.acaproject.reminderapp
 
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.add_task_page.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.io.IOException
-import java.math.BigInteger
 import java.util.*
 
 class FloatingFragment:Fragment() {
@@ -39,7 +33,7 @@ class FloatingFragment:Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.add_task_page, container, false)
+        return inflater.inflate(R.layout.add_task_page,container,false)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -49,53 +43,24 @@ class FloatingFragment:Fragment() {
         task_okBtn.setOnClickListener {
 
             val radioButtonID: Int = task_week.checkedRadioButtonId
-            var chosenDayOfWeek: Int = 0
-            if(radioButtonID != -1 && task_spinner.selectedItem != null){
-                when(radioButtonID){
-                    R.id.monday -> chosenDayOfWeek = Calendar.MONDAY
-                    R.id.tuesday -> chosenDayOfWeek = Calendar.TUESDAY
-                    R.id.wednesday -> chosenDayOfWeek = Calendar.WEDNESDAY
-                    R.id.thursday -> chosenDayOfWeek = Calendar.THURSDAY
-                    R.id.friday -> chosenDayOfWeek = Calendar.FRIDAY
-                    R.id.saturday -> chosenDayOfWeek = Calendar.SATURDAY
-                    R.id.sunday -> chosenDayOfWeek = Calendar.SUNDAY
-                }
-                val dayOfWeek: RadioButton = task_week.findViewById(radioButtonID)
-                val calendar: Calendar = Calendar.getInstance()
-                calendar.set(Calendar.HOUR_OF_DAY, task_timePicker.hour)
-                calendar.set(Calendar.MINUTE, task_timePicker.minute)
-                while(calendar.get(Calendar.DAY_OF_WEEK) != chosenDayOfWeek){
-                    calendar.add(Calendar.DAY_OF_WEEK, 1)
-                }
-                val task = Task(
-                    0,
-                    task_name.text.toString(),
-                    task_spinner.selectedItem.toString(),
-                    task_description.text.toString(),
-                    calendar.timeInMillis,
-                    calendar.timeInMillis,
-                    task_checkBox.isChecked,
-                    false,
-                    TaskManager.TASK_RUNNING
-                )
-                if(task_description.text.toString().isBlank()){
-                    val dialog: AlertDialog = AlertDialog.Builder(activity)
-                        .setMessage("Do you want to add task without description?")
-                        .setCancelable(false)
-                        .setPositiveButton(
-                            "Yes"
-                        ) { _, _ ->
-                            GlobalScope.launch(Dispatchers.IO) {
-                                TaskManager.insertTask(task)
-                            }
-                        }
-                        .setNegativeButton("Cancel", null)
-                        .create()
-                }
-            }else{
-                Toast.makeText(activity, "Please fill all fields", Toast.LENGTH_SHORT).show()
-            }
+            val dayOfWeek: RadioButton = task_week.findViewById(radioButtonID)
+            val calendar: Calendar = Calendar.getInstance()
+//            calendar.set(Calendar.AM_PM, )
+//            val task = Task(
+//                0,
+//                task_name.text.toString(),
+//                task_spinner.selectedItem.toString(),
+//                task_description.text.toString(),
+//                task_timePicker.hour,
+//                task_timePicker.minute,
+//                dayOfWeek.text.toString(),
+//                task_checkBox.isChecked,
+//                1
+//            )
 
+            GlobalScope.launch (Dispatchers.IO){
+
+            }
         }
     }
 
