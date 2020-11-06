@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.add_task_page.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
 interface FragmentControl {
@@ -97,9 +98,11 @@ class MainActivity : AppCompatActivity(), FragmentControl {
 
             supportFragmentManager.popBackStack(null, POP_BACK_STACK_INCLUSIVE)
             val floatingFragment = FloatingFragment()
-            openPage("Add_Task", false, floatingFragment)
+            openPage("Add Task", true, floatingFragment)
+
 
         }
     }
+
 
 }

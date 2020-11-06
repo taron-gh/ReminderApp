@@ -42,12 +42,24 @@ class TaskRecyclerAdapter(private val tasks: List<Task> = mutableListOf(), priva
             val daysOfWeek = listOf(context.getString(R.string.sunday), context.getString(R.string.monday), context.getString(R.string.tuesday), context.getString(R.string.wednesday), context.getString(R.string.thursday), context.getString(R.string.friday), context.getString(R.string.saturday))
             calendar.timeInMillis = task.currentTime
             taskTextView.text = task.name
-            dateTimeTextView.text = "${daysOfWeek[calendar.get(Calendar.DAY_OF_WEEK) - 1]} ${calendar.get(Calendar.HOUR_OF_DAY)} ${calendar.get(Calendar.MINUTE)}"
+            dateTimeTextView.text = "${daysOfWeek[calendar.get(Calendar.DAY_OF_WEEK) - 1]}" +
+                    " ${calendar.get(Calendar.HOUR_OF_DAY)} " +
+                    "${calendar.get(Calendar.MINUTE)} " +
+                    amPm(calendar.get(java.util.Calendar.AM_PM))
             itemView.setOnClickListener {
                 listener.onItemClick(task)
             }
         }
     }
+}
+
+private fun amPm(hour:Int):String{
+    if (hour == 0) {return "AM"}
+
+    if (hour == 1) {return "PM"}
+
+    return "NV"
+
 }
 
 interface OnTaskClickListener {

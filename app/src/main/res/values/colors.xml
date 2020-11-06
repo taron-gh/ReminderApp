@@ -2,6 +2,6 @@
 <resources>
     <color name="colorPrimary">#21727A</color>
     <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
-    <color name="floatingButton">#ED730707</color>
+    <color name="colorAccent">@color/floatingButton</color>
+    <color name="floatingButton">#ED772020</color>
 </resources>
