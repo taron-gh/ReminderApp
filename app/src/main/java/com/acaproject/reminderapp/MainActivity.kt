@@ -48,19 +48,21 @@ class MainActivity : AppCompatActivity(), FragmentControl {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        supportFragmentManager.popBackStack(null, POP_BACK_STACK_INCLUSIVE)
-
         return when (item.itemId) {
 
             R.id.helpItem -> {
-
-                openPage("Help", true, helpFragment)
+                if (!supportFragmentManager.fragments.contains(helpFragment)) {
+                    supportFragmentManager.popBackStack(null, POP_BACK_STACK_INCLUSIVE)
+                    openPage("Help", true, helpFragment)
+                }
 
                 true
             }
             R.id.settingsItem -> {
-
-                openPage("Settings", true, settingsFragment)
+                if (!supportFragmentManager.fragments.contains(settingsFragment)) {
+                    supportFragmentManager.popBackStack(null, POP_BACK_STACK_INCLUSIVE)
+                    openPage("Settings", true, settingsFragment)
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -104,8 +106,6 @@ class MainActivity : AppCompatActivity(), FragmentControl {
 
         }
     }
-
-
 
 
 }
