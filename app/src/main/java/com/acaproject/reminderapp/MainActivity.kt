@@ -20,6 +20,7 @@ interface FragmentControl {
     fun updateToolBar(title: String, hasBack: Boolean)
 
 }
+
 const val CHANNEL_DEFAULT = "channel"
 
 class MainActivity : AppCompatActivity(), FragmentControl {
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity(), FragmentControl {
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(toolBar)
-
+        floatingBtn()
         val homeFragment = HomeFragment()
         openPage("Home", false, homeFragment)
 
@@ -93,7 +94,7 @@ class MainActivity : AppCompatActivity(), FragmentControl {
         }
     }
 
-    private fun floatingBtn (){
+    private fun floatingBtn() {
         floatingBtn.setOnClickListener {
 
             supportFragmentManager.popBackStack(null, POP_BACK_STACK_INCLUSIVE)
@@ -103,6 +104,8 @@ class MainActivity : AppCompatActivity(), FragmentControl {
 
         }
     }
+
+
 
 
 }
