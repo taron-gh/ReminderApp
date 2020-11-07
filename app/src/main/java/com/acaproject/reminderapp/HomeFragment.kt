@@ -90,7 +90,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
     private fun addDataSet() {
         val tasks = mutableListOf<Task>()
-        val task = Task(111, "aaa", "2dsd", "xchj", 5, 4, true, false, 1)
+        val task = Task(111, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "2dsd", "xchj", 5, 4, true, false, 1)
         val task1 = Task(111, "aaa", "2dsd", "xchj", 5, 4, true, false, 1)
         val task2 = Task(111, "aaa", "2dsd", "xchj", 5, 4, true, false, 1)
         val task3 = Task(111, "aaa", "2dsd", "xchj", 5, 4, true, false, 1)

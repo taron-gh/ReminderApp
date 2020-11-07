@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#EFEFEF"
     android:orientation="vertical"
-    android:weightSum="2"
     tools:context=".HomeFragment">
 
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".1"
+        android:layout_height="48dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
         android:entries="@array/Categories"
-        android:layout_margin="5dp"
+        android:padding="5dp"
          />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.7"
-        android:layout_margin="8dp"
-        />
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottomNavBar"
+        android:layout_below="@+id/spinner"
+        android:clipToPadding="false"
+        android:padding="16dp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavBar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:layout_weight=".2"
+        android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_nav_menu" />
 
 
 
 
-</LinearLayout>
+</RelativeLayout>
