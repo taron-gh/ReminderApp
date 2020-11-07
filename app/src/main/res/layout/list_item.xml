@@ -10,9 +10,7 @@
     app:cardPreventCornerOverlap="false"
     >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,14 +26,9 @@
                 android:text="Task"
                 android:textSize="28sp" />
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="50dp"
-                android:scaleType="fitCenter"
-
-                />
+           <CheckBox
+               android:layout_width="24dp"
+               android:layout_height="24dp"/>
 
             <TextView
                 android:id="@+id/dateTimeTextView"
@@ -49,5 +42,4 @@
 
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

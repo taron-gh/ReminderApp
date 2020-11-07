@@ -113,7 +113,7 @@ class FloatingFragment:Fragment() {
     }
     override fun onResume() {
         super.onResume()
-        fragmentControl.updateToolBar("Add_Task", true)
+        fragmentControl.updateToolBar("Add Task", true)
     }
 
 
