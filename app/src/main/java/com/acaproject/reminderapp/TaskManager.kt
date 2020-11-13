@@ -1,6 +1,7 @@
 package com.acaproject.reminderapp
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Room
@@ -25,8 +26,12 @@ object TaskManager {
 
     //*************Tasks Database**************
     suspend fun insertTask(task: Task) {
-        db.tasksDao().insertTask(task)
+        Log.i("TAG", "1")
+        val id = db.tasksDao().insertTask(task)
+        Log.i("TAG", "2")
+        task.taskId = id;
         Alarms.setAlarm(task)
+        Log.i("TAG", "3")
     }
 
     suspend fun removeTask(task: Task) {

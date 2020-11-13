@@ -14,12 +14,13 @@ import java.util.*
 class NotificationService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val taskId  = intent?.getLongExtra("id", 0)
-        Log.i("Service", "onStartCommand")
+        Log.i("Service", taskId.toString())
         GlobalScope.launch {
             withContext(Dispatchers.IO){
                 TaskManager.taskHit(taskId!!)
             }
         }
+        Log.i("Service", "1")
         if (intent?.action == "done") {
             GlobalScope.launch {
                 withContext(Dispatchers.IO){
@@ -31,6 +32,7 @@ class NotificationService : Service() {
                     stopSelf()
                 }
             }
+            Log.i("Service", "2")
         }else if(intent?.action == "postpone"){
             GlobalScope.launch {
                 withContext(Dispatchers.IO){
@@ -38,6 +40,7 @@ class NotificationService : Service() {
                     stopSelf()
                 }
             }
+            Log.i("Service", "3")
         }else if(intent?.action == "cancel"){
             GlobalScope.launch {
                 withContext(Dispatchers.IO){
@@ -49,16 +52,20 @@ class NotificationService : Service() {
                     stopSelf()
                 }
             }
+            Log.i("Service", "4")
         }
         else {
             val doneIntent = Intent(this, NotificationService::class.java).apply {
                 action = "done"
+                putExtra("id", taskId)
             }
             val postponeIntent = Intent(this, NotificationService::class.java).apply {
                 action = "postpone"
+                putExtra("id", taskId)
             }
             val cancelIntent = Intent(this, NotificationService::class.java).apply {
                 action = "cancel"
+                putExtra("id", taskId)
             }
             val donePendingIntent =
                 PendingIntent.getService(this, 0, doneIntent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -75,7 +82,7 @@ class NotificationService : Service() {
                 .addAction(0, "Postpone", postponePendingIntent)
                 .addAction(0, "Cancel", cancelPendingIntent)
                 .build()
-
+            Log.i("Service", "5")
             startForeground(123, notification)
         }
         return START_STICKY
