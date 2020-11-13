@@ -91,13 +91,12 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
     private fun addDataSet() {
         val tasks = mutableListOf<Task>()
-        val task = Task(111, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "2dsd", "xchj", 5, 4, true, false, 1)
         val task1 = Task(111, "aaa", "2dsd", "xchj", 5, 4, true, false, 1)
         val task2 = Task(111, "aaa", "2dsd", "xchj", 5, 4, true, false, 1)
         val task3 = Task(111, "aaa", "2dsd", "xchj", 5, 4, true, false, 1)
         val task4 = Task(111, "aaa", "2dsd", "xchj", 5, 4, true, false, 1)
         val task5 = Task(111, "aaa", "2dsd", "xchj", 5, 4, true, false, 1)
-        tasks.add(task)
+
         tasks.add(task1)
         tasks.add(task2)
         tasks.add(task3)
@@ -121,40 +120,41 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         taskAdapter.notifyDataSetChanged()
     }
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item->
-        when(item.itemId){
-            R.id.categoryMenu -> {
-                Log.i("TAGFragment","category")
-                val adapter = context?.let {
-                    ArrayAdapter.createFromResource(
-                        it,
-                        R.array.Categories,
-                        android.R.layout.simple_spinner_item
-                    )
+    private val mOnNavigationItemSelectedListener =
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.categoryMenu -> {
+                    Log.i("TAGFragment", "category")
+                    val adapter = context?.let {
+                        ArrayAdapter.createFromResource(
+                            it,
+                            R.array.Categories,
+                            android.R.layout.simple_spinner_item
+                        )
+                    }
+                    adapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinner.adapter = adapter
+                    return@OnNavigationItemSelectedListener true
                 }
-                adapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spinner.adapter = adapter
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.weekMenu -> {
-                Log.i("TAGFragment","week")
-                val adapter = context?.let {
-                    ArrayAdapter.createFromResource(
-                        it,
-                        R.array.Week,
-                        android.R.layout.simple_spinner_item
-                    )
+                R.id.weekMenu -> {
+                    Log.i("TAGFragment", "week")
+                    val adapter = context?.let {
+                        ArrayAdapter.createFromResource(
+                            it,
+                            R.array.Week,
+                            android.R.layout.simple_spinner_item
+                        )
+                    }
+                    adapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinner.adapter = adapter
+                    return@OnNavigationItemSelectedListener true
                 }
-                adapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spinner.adapter = adapter
-                return@OnNavigationItemSelectedListener true
+
             }
+
+            false
 
         }
-
-        false
-
-    }
 
 
 }
