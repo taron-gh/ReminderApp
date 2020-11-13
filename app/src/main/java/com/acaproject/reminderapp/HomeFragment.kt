@@ -71,6 +71,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
             val topSpacingDecorator = TopSpacingItemDecoration(30)
             addItemDecoration(topSpacingDecorator)
             layoutManager = LinearLayoutManager(activity)
+
         }
     }
 

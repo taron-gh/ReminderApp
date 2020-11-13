@@ -22,7 +22,9 @@ class TaskRecyclerAdapter(private val tasks: List<Task> = mutableListOf(), priva
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is TaskViewHolder -> holder.bind(tasks[position],clickListener)
+
         }
+        notifyItemChanged(position);
 
     }
 
