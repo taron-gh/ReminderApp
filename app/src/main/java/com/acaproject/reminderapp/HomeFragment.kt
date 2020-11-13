@@ -118,6 +118,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         tasks.add(task5)
 
         taskAdapter = TaskRecyclerAdapter(tasks, this)
+        taskAdapter.notifyDataSetChanged()
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item->

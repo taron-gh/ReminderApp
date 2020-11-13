@@ -24,7 +24,7 @@ class TaskRecyclerAdapter(private val tasks: List<Task> = mutableListOf(), priva
             is TaskViewHolder -> holder.bind(tasks[position],clickListener)
 
         }
-        notifyItemChanged(position);
+        notifyDataSetChanged()
 
     }
 
