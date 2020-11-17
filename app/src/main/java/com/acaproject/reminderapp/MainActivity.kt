@@ -18,14 +18,16 @@ interface FragmentControl {
 
     fun openPage(title: String, hasBack: Boolean, chosenFragment: Fragment)
     fun updateToolBar(title: String, hasBack: Boolean)
+    fun sendTask(task: Task)
 
 }
 
 const val CHANNEL_DEFAULT = "channel"
 
-class MainActivity : AppCompatActivity(), FragmentControl {
+class MainActivity() : AppCompatActivity(), FragmentControl {
     private val helpFragment = HelpFragment()
     private val settingsFragment = SettingsFragment()
+    private val homeFragment = HomeFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,10 +35,11 @@ class MainActivity : AppCompatActivity(), FragmentControl {
 
         setSupportActionBar(toolBar)
         floatingBtn()
-        val homeFragment = HomeFragment()
+
         openPage("Home", false, homeFragment)
 
         floatingBtn()
+
 
     }
 
@@ -94,6 +97,11 @@ class MainActivity : AppCompatActivity(), FragmentControl {
         } else {
             toolBar.navigationIcon = null
         }
+    }
+
+    override fun sendTask(task: Task) {
+        homeFragment.addTask(task)
+
     }
 
     private fun floatingBtn() {

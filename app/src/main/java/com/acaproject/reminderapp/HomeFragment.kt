@@ -14,12 +14,25 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.add_task_page.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.lang.IllegalStateException
+
 
 class HomeFragment : Fragment(), OnTaskClickListener {
 
     private lateinit var fragmentControl: FragmentControl
+    private lateinit var addedTask: Task
+//    private var taskId: Long = 0
+//    private var name: String = ""
+//    private var category: String = ""
+//    private var description: String = ""
+//    private var originalTime: Long = 0
+//    private var currentTime: Long = 0
+//    private var repeatable: Boolean = false
+//    private var postponed: Boolean = false
+//    private var taskState: Int = 0
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -80,8 +93,8 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         val builder = AlertDialog.Builder(activity)
         builder.apply {
             setTitle("Description")
-            setMessage("${task.description}")
-            setNeutralButton("Ok") { dialogInterface: DialogInterface, i: Int ->
+            setMessage(task.description)
+            setNeutralButton("Ok") { _: DialogInterface, _: Int ->
 
             }
             setCancelable(false)
@@ -91,30 +104,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
     private fun addDataSet() {
         val tasks = mutableListOf<Task>()
-        val task1 = Task(111, "aaa", "2dsd", "xchj", 5, 4, true, false, 1)
-        val task2 = Task(111, "aaa", "2dsd", "xchj", 5, 4, true, false, 1)
-        val task3 = Task(111, "aaa", "2dsd", "xchj", 5, 4, true, false, 1)
-        val task4 = Task(111, "aaa", "2dsd", "xchj", 5, 4, true, false, 1)
-        val task5 = Task(111, "aaa", "2dsd", "xchj", 5, 4, true, false, 1)
-
-        tasks.add(task1)
-        tasks.add(task2)
-        tasks.add(task3)
-        tasks.add(task4)
-        tasks.add(task4)
-        tasks.add(task5)
-        tasks.add(task5)
-        tasks.add(task5)
-        tasks.add(task5)
-        tasks.add(task5)
-        tasks.add(task5)
-        tasks.add(task5)
-        tasks.add(task5)
-        tasks.add(task5)
-        tasks.add(task5)
-        tasks.add(task5)
-        tasks.add(task5)
-        tasks.add(task5)
+        tasks.add(addedTask)
 
         taskAdapter = TaskRecyclerAdapter(tasks, this)
         taskAdapter.notifyDataSetChanged()
@@ -156,5 +146,16 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
         }
 
+    fun addTask(task: Task) {
+        addedTask = task
+//        name = task.name
+//        category = task.category
+//        description = task.description
+//        originalTime = task.originalTime
+//        currentTime = task.currentTime
+//        repeatable = task.repeatable
+//        postponed = task.postponed
+//        taskState = task.taskState
 
+    }
 }

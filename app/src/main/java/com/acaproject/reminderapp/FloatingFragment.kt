@@ -2,24 +2,22 @@ package com.acaproject.reminderapp
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.add_task_page.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.io.IOException
-import java.math.BigInteger
 import java.util.*
+
 
 class FloatingFragment:Fragment() {
 
@@ -81,15 +79,17 @@ class FloatingFragment:Fragment() {
 
                 val task = Task(
                     0,
-                    task_name.text.toString(),
-                    task_spinner.selectedItem.toString(),
-                    task_description.text.toString(),
-                    calendar.timeInMillis,
-                    calendar.timeInMillis,
-                    task_checkBox.isChecked,
-                    false,
-                    TaskManager.TASK_RUNNING
+                    name = task_name.text.toString(),
+                    category = task_spinner.selectedItem.toString(),
+                    description = task_description.text.toString(),
+                    originalTime = calendar.timeInMillis,
+                    currentTime = calendar.timeInMillis,
+                    repeatable = task_checkBox.isChecked,
+                    postponed = false,
+                    taskState = TaskManager.TASK_RUNNING
                 )
+                fragmentControl.sendTask(task)
+
 
                 if(task_description.text.toString().isBlank()){
                     val dialog: AlertDialog = AlertDialog.Builder(activity)
@@ -105,6 +105,7 @@ class FloatingFragment:Fragment() {
                         .setNegativeButton("Cancel", null)
                         .create()
                 }
+
             }else{
                 Toast.makeText(activity, "Please fill all fields", Toast.LENGTH_SHORT).show()
             }
