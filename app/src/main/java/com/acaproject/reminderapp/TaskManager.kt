@@ -9,12 +9,10 @@ import java.util.*
 
 object TaskManager {
     private lateinit var context: Context
+    private lateinit var db: Database
     fun init(context1: Context) {
         context = context1
-    }
-
-    private val db by lazy {
-        Room.databaseBuilder(
+        db = Room.databaseBuilder(
             context,
             Database::class.java, "all"
         ).build()
@@ -64,7 +62,17 @@ object TaskManager {
     suspend fun resetAlarms(){
         Alarms.restartAlarmsAfterReboot(db.tasksDao().getAllTasks() as MutableList<Task>)
     }
-
+    suspend fun  getTaskByDayOfWeek(dayOfWeek: Int) : List<Task>?{
+        val returnList: MutableList<Task> = db.tasksDao().getAllTasks() as MutableList<Task>
+        for(task in returnList){
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = task.originalTime
+            if(calendar.get(Calendar.DAY_OF_WEEK) != dayOfWeek){
+                returnList.remove(task)
+            }
+        }
+        return returnList
+    }
     suspend fun getTodayTasks(): List<Task>? {
         val returnList: MutableList<Task> = db.tasksDao().getAllTasks() as MutableList<Task>
         for(task in returnList){

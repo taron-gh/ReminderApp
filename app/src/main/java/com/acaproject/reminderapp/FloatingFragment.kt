@@ -67,7 +67,6 @@ class FloatingFragment:Fragment() {
                     R.id.sunday -> chosenDayOfWeek = Calendar.SUNDAY
                 }
 
-                val dayOfWeek: RadioButton = task_week.findViewById(radioButtonID)
                 val calendar: Calendar = Calendar.getInstance()
 
                 calendar.set(Calendar.HOUR_OF_DAY, task_timePicker.hour)
@@ -98,16 +97,32 @@ class FloatingFragment:Fragment() {
                         .setPositiveButton(
                             "Yes"
                         ) { _, _ ->
-                            GlobalScope.launch(Dispatchers.IO) {
-                                TaskManager.insertTask(task)
+                            GlobalScope.launch {
+                                TaskManager.insertTask(Task(
+                                    0,
+                                    name = task_name.text.toString(),
+                                    category = task_spinner.selectedItem.toString(),
+                                    description = task_description.text.toString(),
+                                    originalTime = calendar.timeInMillis,
+                                    currentTime = calendar.timeInMillis,
+                                    repeatable = task_checkBox.isChecked,
+                                    postponed = false,
+                                    taskState = TaskManager.TASK_RUNNING
+                                ))
                             }
+                            fragmentControl.sendTask(task)
+                            fragmentManager?.popBackStack()
                         }
                         .setNegativeButton("Cancel", null)
                         .create()
-
+                    dialog.show()
+                }else{
+                    GlobalScope.launch(Dispatchers.IO) {
+                        TaskManager.insertTask(task)
+                    }
+                    fragmentControl.sendTask(task)
+                    fragmentManager?.popBackStack()
                 }
-                fragmentControl.sendTask(task)
-                fragmentManager?.popBackStack()
 
 
             }else{

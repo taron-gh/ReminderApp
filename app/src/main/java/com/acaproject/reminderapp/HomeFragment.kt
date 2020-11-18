@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.IllegalStateException
+import java.util.*
 
 
 class HomeFragment : Fragment(), OnTaskClickListener {
@@ -57,7 +58,6 @@ class HomeFragment : Fragment(), OnTaskClickListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
 
             }
-
         }
         super.onViewCreated(view, savedInstanceState)
     }
@@ -68,18 +68,15 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     }
 
     private fun initRecyclerView() {
-
         recyclerView.apply {
             adapter = taskAdapter
             val topSpacingDecorator = TopSpacingItemDecoration(30)
             addItemDecoration(topSpacingDecorator)
             layoutManager = LinearLayoutManager(activity)
-
         }
     }
 
     override fun onItemClick(task: Task) {
-
         val builder = AlertDialog.Builder(activity)
         builder.apply {
             setTitle("Description")
@@ -105,7 +102,6 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
 
     private fun addDataSet() {
-
         taskAdapter = TaskRecyclerAdapter(tasks, this)
 //        taskAdapter.notifyDataSetChanged()
     }
@@ -150,18 +146,12 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         tasks.add(task)
     }
 
-
-
     suspend fun filterTasksByCategory(category: Int) : List<Task>?{
         return TaskManager.getTasks(category)
     }
 
-//    suspend fun filterTasksByWeekday(weekday: Int) : List<Task>{
-//        val tasksList: List<Task> = TaskManager.
-//        val resultTasks: List<Task>
-//        for(task in tasksList){
-//
-//        }
-//    }
+    suspend fun filterTasksByWeekday(weekday: Int) : List<Task>?{
+        return TaskManager.getTaskByDayOfWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
+    }
 
 }
