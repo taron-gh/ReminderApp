@@ -92,6 +92,16 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         }
     }
 
+    override fun onItemLongClick(task: Task) {
+        val builder = AlertDialog.Builder(activity)
+        builder.apply {
+           // delete dialog
+
+            show()
+        }
+    }
+
+
     private fun addDataSet() {
 
         taskAdapter = TaskRecyclerAdapter(tasks, this)
@@ -137,4 +147,16 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     fun addTask(task: Task) {
         tasks.add(task)
     }
+
+
+
+    fun filterTasksByCategory(category: String) {
+        //filter function
+
+    }
+
+    fun filterTasksByWeekday(weekday: String) {
+        //filter function
+    }
+
 }

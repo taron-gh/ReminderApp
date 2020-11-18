@@ -4,18 +4,21 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.list_item.view.*
 import java.util.*
+
 
 class TaskRecyclerAdapter(
     private val tasks: List<Task> = mutableListOf(),
     private var clickListener: OnTaskClickListener
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    //    private var tasks: List<Task> = ArrayList()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return TaskViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
@@ -26,15 +29,10 @@ class TaskRecyclerAdapter(
         when (holder) {
             is TaskViewHolder -> holder.bind(tasks[position], clickListener)
         }
-
-
     }
 
     override fun getItemCount(): Int = tasks.size
 
-    //   fun submitList(taskList: List<Task>){
-//       tasks = taskList
-//   }
     class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val taskTextView: TextView = itemView.taskTextView
@@ -64,7 +62,14 @@ class TaskRecyclerAdapter(
                 listener.onItemClick(task)
             }
 
+            itemView.setOnLongClickListener {
+                listener.onItemLongClick(task)
+                true
+            }
+
+
         }
+
 
     }
 
@@ -85,4 +90,5 @@ private fun amPm(hour: Int): String {
 
 interface OnTaskClickListener {
     fun onItemClick(task: Task)
+    fun onItemLongClick(task: Task)
 }
