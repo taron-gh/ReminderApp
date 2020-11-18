@@ -88,7 +88,7 @@ class FloatingFragment:Fragment() {
                     postponed = false,
                     taskState = TaskManager.TASK_RUNNING
                 )
-                fragmentControl.sendTask(task)
+
 
 
                 if(task_description.text.toString().isBlank()){
@@ -104,7 +104,11 @@ class FloatingFragment:Fragment() {
                         }
                         .setNegativeButton("Cancel", null)
                         .create()
+
                 }
+                fragmentControl.sendTask(task)
+                fragmentManager?.popBackStack()
+
 
             }else{
                 Toast.makeText(activity, "Please fill all fields", Toast.LENGTH_SHORT).show()

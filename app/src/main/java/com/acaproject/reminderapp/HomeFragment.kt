@@ -23,16 +23,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
     private lateinit var fragmentControl: FragmentControl
     private lateinit var addedTask: Task
-//    private var taskId: Long = 0
-//    private var name: String = ""
-//    private var category: String = ""
-//    private var description: String = ""
-//    private var originalTime: Long = 0
-//    private var currentTime: Long = 0
-//    private var repeatable: Boolean = false
-//    private var postponed: Boolean = false
-//    private var taskState: Int = 0
-
+    private val tasks = mutableListOf<Task>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -40,9 +31,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
             fragmentControl = context
         } else throw IllegalStateException("Activity must implement fragmentControl")
 
-
     }
-
 
     private lateinit var taskAdapter: TaskRecyclerAdapter
 
@@ -54,6 +43,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         addDataSet()
         initRecyclerView()
 
@@ -103,11 +93,9 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     }
 
     private fun addDataSet() {
-        val tasks = mutableListOf<Task>()
-        tasks.add(addedTask)
 
         taskAdapter = TaskRecyclerAdapter(tasks, this)
-        taskAdapter.notifyDataSetChanged()
+//        taskAdapter.notifyDataSetChanged()
     }
 
     private val mOnNavigationItemSelectedListener =
@@ -147,15 +135,6 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         }
 
     fun addTask(task: Task) {
-        addedTask = task
-//        name = task.name
-//        category = task.category
-//        description = task.description
-//        originalTime = task.originalTime
-//        currentTime = task.currentTime
-//        repeatable = task.repeatable
-//        postponed = task.postponed
-//        taskState = task.taskState
-
+        tasks.add(task)
     }
 }
