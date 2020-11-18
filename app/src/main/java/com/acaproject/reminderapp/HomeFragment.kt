@@ -11,11 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.add_task_page.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.lang.IllegalStateException
 
 
@@ -84,9 +84,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         builder.apply {
             setTitle("Description")
             setMessage(task.description)
-            setNeutralButton("Ok") { _: DialogInterface, _: Int ->
-
-            }
+            setNeutralButton("Ok", null)
             setCancelable(false)
             show()
         }
@@ -95,8 +93,12 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     override fun onItemLongClick(task: Task) {
         val builder = AlertDialog.Builder(activity)
         builder.apply {
-           // delete dialog
-
+            setMessage("Are you sure you want to delete this task?")
+            setPositiveButton("Ok") { _: DialogInterface, _: Int ->
+                GlobalScope.launch { TaskManager.removeTask(task) }
+            }
+            setNeutralButton("Cancel", null)
+            setCancelable(false)
             show()
         }
     }
@@ -150,13 +152,16 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
 
 
-    fun filterTasksByCategory(category: String) {
-        //filter function
-
+    suspend fun filterTasksByCategory(category: Int) : List<Task>?{
+        return TaskManager.getTasks(category)
     }
 
-    fun filterTasksByWeekday(weekday: String) {
-        //filter function
-    }
+//    suspend fun filterTasksByWeekday(weekday: Int) : List<Task>{
+//        val tasksList: List<Task> = TaskManager.
+//        val resultTasks: List<Task>
+//        for(task in tasksList){
+//
+//        }
+//    }
 
 }
