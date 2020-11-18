@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -23,6 +24,7 @@ object Alarms {
             addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
             putExtra("id", primaryKey)
         }
+        Log.i("Alarms", primaryKey.toString())
         val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(
@@ -46,6 +48,7 @@ object Alarms {
             addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
             putExtra("id", primaryKey)
         }
+
         val pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0)
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(
