@@ -14,10 +14,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import androidx.fragment.app.FragmentTransaction
+import androidx.room.Room
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.add_task_page.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 interface FragmentControl {
 
@@ -37,7 +40,23 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        init()
+        //init()
+        val db: Database = Room.databaseBuilder(
+            this,
+            Database::class.java, "all"
+        ).build()
+        GlobalScope.launch {
+            db.tasksDao().insertTask(Task(0,
+                "aaa",
+                "aaaaa",
+                "aaaa",
+                0,
+                0,
+                false,
+                false,
+                TaskManager.TASK_RUNNING
+            ))
+        }
         setSupportActionBar(toolBar)
         floatingBtn()
 

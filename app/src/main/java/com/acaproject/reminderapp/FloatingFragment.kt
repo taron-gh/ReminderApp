@@ -98,17 +98,7 @@ class FloatingFragment:Fragment() {
                             "Yes"
                         ) { _, _ ->
                             GlobalScope.launch {
-                                TaskManager.insertTask(Task(
-                                    0,
-                                    name = task_name.text.toString(),
-                                    category = task_spinner.selectedItem.toString(),
-                                    description = task_description.text.toString(),
-                                    originalTime = calendar.timeInMillis,
-                                    currentTime = calendar.timeInMillis,
-                                    repeatable = task_checkBox.isChecked,
-                                    postponed = false,
-                                    taskState = TaskManager.TASK_RUNNING
-                                ))
+                                TaskManager.insertTask(task)
                             }
                             fragmentControl.sendTask(task)
                             fragmentManager?.popBackStack()
