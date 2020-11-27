@@ -19,7 +19,7 @@ object Alarms {
     }
     fun setAlarm(task: Task){
         val primaryKey = task.taskId
-        val timeInMillis = task.currentTime
+        val timeInMillis = task.originalTime
         val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
             addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
             putExtra("id", primaryKey)
