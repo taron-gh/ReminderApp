@@ -13,11 +13,12 @@ import java.util.*
 object Alarms {
     private lateinit var context: Context
     private lateinit var alarmManager: AlarmManager
-    fun init(context1: Context){
+    fun init(context1: Context) {
         context = context1
         alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     }
-    fun setAlarm(task: Task){
+
+    fun setAlarm(task: Task) {
         val primaryKey = task.taskId
         val timeInMillis = task.originalTime
         val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
@@ -26,13 +27,13 @@ object Alarms {
         }
         Log.i("Alarms", primaryKey.toString())
         val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 timeInMillis,
                 pendingIntent
             )
-        }else{
+        } else {
             alarmManager.setExact(
                 AlarmManager.RTC_WAKEUP,
                 timeInMillis,
@@ -41,7 +42,7 @@ object Alarms {
         }
     }
 
-    fun setPostponedAlarm(task: Task){
+    fun setPostponedAlarm(task: Task) {
         val primaryKey = task.taskId
         val timeInMillis = task.currentTime
         val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
@@ -50,13 +51,13 @@ object Alarms {
         }
 
         val pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0)
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 timeInMillis,
                 pendingIntent
             )
-        }else{
+        } else {
             alarmManager.setExact(
                 AlarmManager.RTC_WAKEUP,
                 timeInMillis,
@@ -65,7 +66,7 @@ object Alarms {
         }
     }
 
-    fun cancelAlarm(task: Task){
+    fun cancelAlarm(task: Task) {
         val primaryKey = task.taskId
         val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
             addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
@@ -75,7 +76,7 @@ object Alarms {
         alarmManager.cancel(pendingIntent)
     }
 
-    fun cancelPostponedAlarm(task: Task){
+    fun cancelPostponedAlarm(task: Task) {
         val primaryKey = task.taskId
         val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
             addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
@@ -85,22 +86,28 @@ object Alarms {
         alarmManager.cancel(pendingIntent)
     }
 
-    fun restartAlarmsAfterReboot(tasks: MutableList<Task>){
-        for(task in tasks){
-            setAlarm(task)
-            if(task.postponed){
-                val calendar: Calendar = Calendar.getInstance()
-                calendar.timeInMillis = task.currentTime
-                if(Calendar.getInstance().compareTo(calendar) > 0){
-                    setPostponedAlarm(task)
-                }else{
-                    calendar.set(Calendar.DAY_OF_YEAR, Calendar.getInstance().get(Calendar.DAY_OF_YEAR))
-                    task.currentTime = calendar.timeInMillis
-                    GlobalScope.launch {
-                        TaskManager.updateTaskWithTime(task)
-                    }
+    fun restartAlarmsAfterReboot(tasks: MutableList<Task>) {
+        for (task in tasks) {
+            val currentCalendar = Calendar.getInstance()
+            val originalCalendar = Calendar.getInstance()
+            currentCalendar.timeInMillis = task.currentTime
+            val lastCurrentDayOfWeek = currentCalendar.get(Calendar.DAY_OF_WEEK)
+            originalCalendar.timeInMillis = task.originalTime
+            val lastOriginalDayOfWeek = originalCalendar.get(Calendar.DAY_OF_WEEK)
+            if (originalCalendar.timeInMillis < Calendar.getInstance().timeInMillis) {
+                while (!(originalCalendar.timeInMillis > Calendar.getInstance().timeInMillis
+                            && originalCalendar.get(Calendar.DAY_OF_WEEK) == lastOriginalDayOfWeek)) {
+                    originalCalendar.add(Calendar.DAY_OF_WEEK, 1)
                 }
             }
+            if (task.postponed && currentCalendar.timeInMillis < Calendar.getInstance().timeInMillis) {
+                while (!(currentCalendar.timeInMillis > Calendar.getInstance().timeInMillis
+                            && currentCalendar.get(Calendar.DAY_OF_WEEK) == lastCurrentDayOfWeek)) {
+                    currentCalendar.add(Calendar.DAY_OF_WEEK, 1)
+                }
+                setPostponedAlarm(task)
+            }
+            setAlarm(task)
         }
     }
 }

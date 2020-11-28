@@ -12,9 +12,10 @@ object TaskManager {
     private lateinit var db: Database
     fun init(context1: Context) {
         context = context1
-        db = Room.inMemoryDatabaseBuilder(
+        db = Room.databaseBuilder(
             context,
-            Database::class.java
+            Database::class.java,
+            "tasks"
         ).build()
     }
     const val TASK_COMPLETED = 1

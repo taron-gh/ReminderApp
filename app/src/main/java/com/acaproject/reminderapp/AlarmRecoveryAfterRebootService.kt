@@ -12,17 +12,7 @@ class AlarmRecoveryAfterRebootService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         GlobalScope.launch {
             TaskManager.resetAlarms()
-            TaskManager.insertTask(Task(
-                0,
-                name = "after reboot",
-                category = "aa",
-                description = "aaa",
-                originalTime = 1,
-                currentTime = 1,
-                repeatable = false,
-                postponed = false,
-                taskState = TaskManager.TASK_RUNNING
-            ))
+            stopSelf()
         }
         val notification = NotificationCompat.Builder(this, CHANNEL_DEFAULT)
             .setContentTitle("Restoring data after reboot")

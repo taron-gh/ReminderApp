@@ -11,6 +11,7 @@ class ReminderApplication : Application() {
         super.onCreate()
         TaskManager.init(this)
         Alarms.init(this)
+        BackupConverter.init(this)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_DEFAULT,

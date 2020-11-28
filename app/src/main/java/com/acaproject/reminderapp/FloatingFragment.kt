@@ -69,7 +69,9 @@ class FloatingFragment:Fragment() {
                 val calendar: Calendar = Calendar.getInstance()
                 calendar.set(Calendar.HOUR_OF_DAY, task_timePicker.hour)
                 calendar.set(Calendar.MINUTE, task_timePicker.minute)
-                calendar.set(Calendar.DAY_OF_WEEK, chosenDayOfWeek)
+                while(chosenDayOfWeek != calendar.get(Calendar.DAY_OF_WEEK)){
+                    calendar.add(Calendar.DAY_OF_WEEK, 1)
+                }
                 val task = Task(
                     0,
                     name = task_name.text.toString(),
