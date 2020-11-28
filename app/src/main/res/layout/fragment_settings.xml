@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".SettingsFragment">
-    <TextView
+
+
+    <EditText
+        android:id="@+id/timeEditText"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textAlignment="center"
-        android:textSize="32sp"
-        android:text="@string/settings_fragment"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:hint="minutes before notification"
         />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/importButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/button_style"
+        android:text="@string/import_data"
+        android:textColor="#fff" />
+
+    <Button
+        android:id="@+id/exportButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/button_style"
+        android:text="@string/export_data"
+        android:textColor="#fff" />
+</LinearLayout>

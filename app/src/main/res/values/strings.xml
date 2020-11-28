@@ -32,4 +32,17 @@
     <string name="saturday">Saturday</string>
     <string name="category_menu">Category</string>
     <string name="week_menu">Week</string>
+    <string name="import_data">Import data</string>
+    <string name="export_data">Export data</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
+    <string name="task_name">Task name</string>
+    <string name="mon">Mon</string>
+    <string name="tue">Tue</string>
+    <string name="wed">Wed</string>
+    <string name="thu">Thu</string>
+    <string name="fri">Fri</string>
+    <string name="sat">Sat</string>
+    <string name="task_description">Task description</string>
+    <string name="checkbox_text">I want my task to be repeatable</string>
 </resources>
