@@ -59,6 +59,13 @@ object TaskManager {
             Alarms.setPostponedAlarm(task)
         }
     }
+    suspend fun getAllTasks() : List<Task>{
+        return db.tasksDao().getAllTasks()
+    }
+
+    fun deleteAllTasks(){
+        db.clearAllTables()
+    }
 
     suspend fun resetAlarms(){
         Alarms.restartAlarmsAfterReboot(db.tasksDao().getAllTasks() as MutableList<Task>)
