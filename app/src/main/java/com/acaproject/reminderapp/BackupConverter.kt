@@ -45,7 +45,7 @@ object BackupConverter {
         }
     }
 
-    fun readFromBackup(mode: Int, file: File){
+    private fun readFromBackup(mode: Int, file: File){
         GlobalScope.launch(Dispatchers.IO){
             val length = file.length().toInt()
             val gson = Gson()
