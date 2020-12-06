@@ -11,10 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.acaproject.reminderapp.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.list_item.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.IllegalStateException
@@ -35,9 +38,9 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
             val filteredTasks = tasks.filter {
-                it.category == parent?.getItemAtPosition(position) .toString()
+                it.category == parent?.getItemAtPosition(position).toString()
             }
-                    taskAdapter.updateList(filteredTasks)
+            taskAdapter.updateList(filteredTasks)
         }
     }
 
@@ -81,7 +84,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         super.onViewCreated(view, savedInstanceState)
     }
 
-   private fun initSpinners(){
+    private fun initSpinners() {
         val adapterCategory = context?.let {
             ArrayAdapter.createFromResource(
                 it,
@@ -148,13 +151,11 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     }
 
     override fun editTaskPage(task: Task) {
-        editBtn.setOnClickListener {
 
-            fragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
             val editFragment = EditFragment(task)
             fragmentControl.openPage("Edit Task", true, editFragment)
 
-        }
+
     }
 
 
@@ -191,16 +192,17 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         tasks.add(task)
     }
 
-    fun edit(task:Task){
-        GlobalScope.launch (Dispatchers.IO){
+    fun edit(task: Task) {
+        GlobalScope.launch(Dispatchers.IO) {
             TaskManager.updateTaskWithTime(task)
         }
-    suspend fun filterTasksByCategory(category: Int) : List<Task>?{
-        return TaskManager.getTasks(category)
-    }
+        suspend fun filterTasksByCategory(category: Int): List<Task>? {
+            return TaskManager.getTasks(category)
+        }
 
-    suspend fun filterTasksByWeekday(weekday: Int) : List<Task>?{
-        return TaskManager.getTaskByDayOfWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
-    }
+        suspend fun filterTasksByWeekday(weekday: Int): List<Task>? {
+            return TaskManager.getTaskByDayOfWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
+        }
 
+    }
 }
