@@ -1,4 +1,4 @@
-package com.acaproject.reminderapp
+package com.acaproject.reminderapp.fragments
 
 import android.app.AlertDialog
 import android.content.Context
@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.acaproject.reminderapp.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.GlobalScope
@@ -103,7 +104,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
     private fun addDataSet() {
         taskAdapter = TaskRecyclerAdapter(tasks, this)
-//        taskAdapter.notifyDataSetChanged()
+
     }
 
     private val mOnNavigationItemSelectedListener =

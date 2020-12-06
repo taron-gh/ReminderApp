@@ -13,11 +13,12 @@ import java.util.*
 object Alarms {
     private lateinit var context: Context
     private lateinit var alarmManager: AlarmManager
-    fun init(context1: Context){
+    fun init(context1: Context) {
         context = context1
         alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     }
-    fun setAlarm(task: Task){
+
+    fun setAlarm(task: Task) {
         val primaryKey = task.taskId
         val timeInMillis = task.currentTime
         val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
@@ -26,13 +27,13 @@ object Alarms {
         }
         Log.i("Alarms", primaryKey.toString())
         val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 timeInMillis,
                 pendingIntent
             )
-        }else{
+        } else {
             alarmManager.setExact(
                 AlarmManager.RTC_WAKEUP,
                 timeInMillis,
@@ -41,7 +42,7 @@ object Alarms {
         }
     }
 
-    fun setPostponedAlarm(task: Task){
+    fun setPostponedAlarm(task: Task) {
         val primaryKey = task.taskId
         val timeInMillis = task.currentTime
         val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
@@ -50,13 +51,13 @@ object Alarms {
         }
 
         val pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0)
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 timeInMillis,
                 pendingIntent
             )
-        }else{
+        } else {
             alarmManager.setExact(
                 AlarmManager.RTC_WAKEUP,
                 timeInMillis,
@@ -65,7 +66,7 @@ object Alarms {
         }
     }
 
-    fun cancelAlarm(task: Task){
+    fun cancelAlarm(task: Task) {
         val primaryKey = task.taskId
         val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
             addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
@@ -75,7 +76,7 @@ object Alarms {
         alarmManager.cancel(pendingIntent)
     }
 
-    fun cancelPostponedAlarm(task: Task){
+    fun cancelPostponedAlarm(task: Task) {
         val primaryKey = task.taskId
         val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
             addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
@@ -85,16 +86,19 @@ object Alarms {
         alarmManager.cancel(pendingIntent)
     }
 
-    fun restartAlarmsAfterReboot(tasks: MutableList<Task>){
-        for(task in tasks){
+    fun restartAlarmsAfterReboot(tasks: MutableList<Task>) {
+        for (task in tasks) {
             setAlarm(task)
-            if(task.postponed){
+            if (task.postponed) {
                 val calendar: Calendar = Calendar.getInstance()
                 calendar.timeInMillis = task.currentTime
-                if(Calendar.getInstance().compareTo(calendar) > 0){
+                if (Calendar.getInstance().compareTo(calendar) > 0) {
                     setPostponedAlarm(task)
-                }else{
-                    calendar.set(Calendar.DAY_OF_YEAR, Calendar.getInstance().get(Calendar.DAY_OF_YEAR))
+                } else {
+                    calendar.set(
+                        Calendar.DAY_OF_YEAR,
+                        Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
+                    )
                     task.currentTime = calendar.timeInMillis
                     GlobalScope.launch {
                         TaskManager.updateTaskWithTime(task)

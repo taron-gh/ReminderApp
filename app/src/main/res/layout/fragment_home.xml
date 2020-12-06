@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#EFEFEF"
     android:orientation="vertical"
-    tools:context=".HomeFragment">
+    tools:context=".fragments.HomeFragment">
 
     <Spinner
         android:id="@+id/spinner"

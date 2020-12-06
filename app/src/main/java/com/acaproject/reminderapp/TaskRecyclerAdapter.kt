@@ -27,7 +27,9 @@ class TaskRecyclerAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is TaskViewHolder -> holder.bind(tasks[position], clickListener)
+            is TaskViewHolder -> {
+                holder.bind(tasks[position], clickListener)
+            }
         }
     }
 
