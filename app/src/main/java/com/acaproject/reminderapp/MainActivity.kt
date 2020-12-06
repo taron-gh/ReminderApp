@@ -9,16 +9,12 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
-import androidx.fragment.app.FragmentTransaction
 import androidx.room.Room
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.acaproject.reminderapp.fragments.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.add_task_page.*
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -27,6 +23,7 @@ interface FragmentControl {
     fun openPage(title: String, hasBack: Boolean, chosenFragment: Fragment)
     fun updateToolBar(title: String, hasBack: Boolean)
     fun sendTask(task: Task)
+    fun editTask(task: Task)
 
 }
 
@@ -110,6 +107,11 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
     override fun sendTask(task: Task) {
         homeFragment.addTask(task)
 
+    }
+
+    override fun editTask(task: Task) {
+
+        homeFragment.edit(task)
     }
 
     private fun floatingBtn() {

@@ -1,4 +1,4 @@
-package com.acaproject.reminderapp
+package com.acaproject.reminderapp.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -6,9 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_help.*
+import com.acaproject.reminderapp.FragmentControl
+import com.acaproject.reminderapp.R
+import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.IllegalStateException
 
-class HelpFragment : Fragment() {
+class SettingsFragment : Fragment() {
+
     private lateinit var fragmentControl: FragmentControl
 
     override fun onAttach(context: Context) {
@@ -17,7 +21,7 @@ class HelpFragment : Fragment() {
             fragmentControl = context
         } else throw IllegalStateException("Activity must implement fragmentControl")
 
-        fragmentControl.updateToolBar("Help", true)
+        fragmentControl.updateToolBar("Settings", true)
     }
 
 
@@ -26,12 +30,15 @@ class HelpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        return inflater.inflate(R.layout.fragment_help, container, false)
+        toolBar?.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
+        toolBar?.setNavigationOnClickListener { activity?.onBackPressed() }
+        return inflater.inflate(R.layout.fragment_settings, container, false)
+
     }
 
     override fun onResume() {
         super.onResume()
-        fragmentControl.updateToolBar("Help", true)
+        fragmentControl.updateToolBar("Settings", true)
     }
 
 }

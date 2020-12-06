@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -13,40 +13,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        />
-
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        app:titleTextColor="#F3E9E9" />
 
     <FrameLayout
-        android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/menuFragmentContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <FrameLayout
+            android:id="@+id/fragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="80dp"
-        android:layout_marginRight="16dp"
-        app:fabSize="normal"
-        app:backgroundTint="@color/floatingButton"
-        android:src="@drawable/add_floatingbtn"
-        android:elevation="6dp"
-
-        />
-
-</FrameLayout>
+        <FrameLayout
+            android:id="@+id/menuFragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="80dp"
+            android:elevation="6dp"
+            android:src="@drawable/add_floatingbtn"
+            app:backgroundTint="@color/colorPrimary"
+            app:fabSize="normal"
 
+            />
 
+    </FrameLayout>
 
 </LinearLayout>
