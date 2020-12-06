@@ -12,11 +12,18 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.add_task_page.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.list_item.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.lang.IllegalStateException
+import java.util.*
 
 
 class HomeFragment : Fragment(), OnTaskClickListener {
@@ -24,6 +31,32 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     private lateinit var fragmentControl: FragmentControl
     private lateinit var addedTask: Task
     private val tasks = mutableListOf<Task>()
+
+    private val categorySpinnerListener = object : AdapterView.OnItemSelectedListener {
+        override fun onNothingSelected(p0: AdapterView<*>?) {
+
+        }
+
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+            val filteredTasks = tasks.filter {
+                it.category == parent?.getItemAtPosition(position) .toString()
+            }
+                    taskAdapter.updateList(filteredTasks)
+        }
+    }
+
+
+    private val weekSpinnerListener = object : AdapterView.OnItemSelectedListener {
+        override fun onNothingSelected(p0: AdapterView<*>?) {
+
+        }
+
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+
+        }
+
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -46,20 +79,39 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
         addDataSet()
         initRecyclerView()
+        initSpinners()
 
         bottomNavBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-
-            }
-
-        }
         super.onViewCreated(view, savedInstanceState)
+    }
+
+   private fun initSpinners(){
+        val adapterCategory = context?.let {
+            ArrayAdapter.createFromResource(
+                it,
+                R.array.Categories,
+                android.R.layout.simple_spinner_item
+            )
+        }
+
+        adapterCategory?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner_category.adapter = adapterCategory
+        spinner_category.onItemSelectedListener = categorySpinnerListener
+
+        val adapterWeek = context?.let {
+            ArrayAdapter.createFromResource(
+                it,
+                R.array.Week,
+                android.R.layout.simple_spinner_item
+            )
+        }
+
+
+        adapterWeek?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner_week.adapter = adapterWeek
+        spinner_week.onItemSelectedListener = weekSpinnerListener
+
     }
 
     override fun onResume() {
@@ -95,9 +147,19 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     override fun onItemLongClick(task: Task) {
         val builder = AlertDialog.Builder(activity)
         builder.apply {
-           // delete dialog
+            // delete dialog
 
             show()
+        }
+    }
+
+    override fun editTaskPage(task: Task) {
+        editBtn.setOnClickListener {
+
+            fragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            val editFragment = EditFragment(task)
+            fragmentControl.openPage("Edit Task", true, editFragment)
+
         }
     }
 
@@ -105,36 +167,23 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     private fun addDataSet() {
 
         taskAdapter = TaskRecyclerAdapter(tasks, this)
-//        taskAdapter.notifyDataSetChanged()
     }
 
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.categoryMenu -> {
-                    Log.i("TAGFragment", "category")
-                    val adapter = context?.let {
-                        ArrayAdapter.createFromResource(
-                            it,
-                            R.array.Categories,
-                            android.R.layout.simple_spinner_item
-                        )
-                    }
-                    adapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    spinner.adapter = adapter
+
+                    spinner_week.visibility = View.GONE
+                    spinner_category.visibility = View.VISIBLE
+
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.weekMenu -> {
-                    Log.i("TAGFragment", "week")
-                    val adapter = context?.let {
-                        ArrayAdapter.createFromResource(
-                            it,
-                            R.array.Week,
-                            android.R.layout.simple_spinner_item
-                        )
-                    }
-                    adapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    spinner.adapter = adapter
+
+                    spinner_category.visibility = View.GONE
+                    spinner_week.visibility = View.VISIBLE
+
                     return@OnNavigationItemSelectedListener true
                 }
 
@@ -148,15 +197,11 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         tasks.add(task)
     }
 
-
-
-    fun filterTasksByCategory(category: String) {
-        //filter function
-
+    fun edit(task:Task){
+        GlobalScope.launch (Dispatchers.IO){
+            TaskManager.updateTaskWithTime(task)
+        }
     }
-
-    fun filterTasksByWeekday(weekday: String) {
-        //filter function
-    }
-
 }
+
+

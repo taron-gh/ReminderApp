@@ -14,6 +14,7 @@
         <item name="family">Family</item>
         <item name="other">Other</item>
     </string-array>
+
     <string-array name="Week">
         <item name="sunday">Sunday</item>
         <item name="monday">Monday</item>
@@ -22,6 +23,7 @@
         <item name="thursday">Thursday</item>
         <item name="friday">Friday</item>
         <item name="saturday">Saturday</item>
+
     </string-array>
     <string name="sunday">Sunday</string>
     <string name="monday">Monday</string>

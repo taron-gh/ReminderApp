@@ -13,12 +13,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.add_task_page.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 interface FragmentControl {
 
     fun openPage(title: String, hasBack: Boolean, chosenFragment: Fragment)
     fun updateToolBar(title: String, hasBack: Boolean)
     fun sendTask(task: Task)
+    fun editTask(task: Task)
 
 }
 
@@ -102,6 +106,11 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
     override fun sendTask(task: Task) {
         homeFragment.addTask(task)
 
+    }
+
+    override fun editTask(task: Task) {
+
+        homeFragment.edit(task)
     }
 
     private fun floatingBtn() {
