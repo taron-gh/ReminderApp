@@ -12,7 +12,7 @@ class ReminderApplication : Application() {
         TaskManager.init(this)
         Alarms.init(this)
         BackupConverter.init(this)
-        BackupConverter.checkOnStart()
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_DEFAULT,

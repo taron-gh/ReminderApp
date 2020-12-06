@@ -86,7 +86,7 @@ object BackupConverter {
     }
 
     fun checkOnStart(){
-        if(importDirectory.listFiles() != null){
+        if(importDirectory.listFiles().isNotEmpty()){
             if(importDirectory.listFiles()!!.size > 1){
                 val dialog = AlertDialog.Builder(context)
                     .setMessage("There are multiple backup files in import directory. Please leave only 1, and restart application.")

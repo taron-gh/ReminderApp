@@ -40,7 +40,7 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //init()
+        BackupConverter.checkOnStart()
         setSupportActionBar(toolBar)
         floatingBtn()
 
