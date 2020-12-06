@@ -23,6 +23,7 @@ interface FragmentControl {
     fun openPage(title: String, hasBack: Boolean, chosenFragment: Fragment)
     fun updateToolBar(title: String, hasBack: Boolean)
     fun sendTask(task: Task)
+    fun editTask(task: Task)
 
 }
 
@@ -122,6 +123,11 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
     override fun sendTask(task: Task) {
         homeFragment.addTask(task)
 
+    }
+
+    override fun editTask(task: Task) {
+
+        homeFragment.edit(task)
     }
 
     private fun floatingBtn() {

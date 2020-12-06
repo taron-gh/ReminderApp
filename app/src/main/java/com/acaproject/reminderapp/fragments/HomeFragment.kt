@@ -27,6 +27,32 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     private lateinit var addedTask: Task
     private val tasks = mutableListOf<Task>()
 
+    private val categorySpinnerListener = object : AdapterView.OnItemSelectedListener {
+        override fun onNothingSelected(p0: AdapterView<*>?) {
+
+        }
+
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+            val filteredTasks = tasks.filter {
+                it.category == parent?.getItemAtPosition(position) .toString()
+            }
+                    taskAdapter.updateList(filteredTasks)
+        }
+    }
+
+
+    private val weekSpinnerListener = object : AdapterView.OnItemSelectedListener {
+        override fun onNothingSelected(p0: AdapterView<*>?) {
+
+        }
+
+        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+
+        }
+
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is FragmentControl) {
@@ -48,19 +74,39 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
         addDataSet()
         initRecyclerView()
+        initSpinners()
 
         bottomNavBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-
-            }
-        }
         super.onViewCreated(view, savedInstanceState)
+    }
+
+   private fun initSpinners(){
+        val adapterCategory = context?.let {
+            ArrayAdapter.createFromResource(
+                it,
+                R.array.Categories,
+                android.R.layout.simple_spinner_item
+            )
+        }
+
+        adapterCategory?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner_category.adapter = adapterCategory
+        spinner_category.onItemSelectedListener = categorySpinnerListener
+
+        val adapterWeek = context?.let {
+            ArrayAdapter.createFromResource(
+                it,
+                R.array.Week,
+                android.R.layout.simple_spinner_item
+            )
+        }
+
+
+        adapterWeek?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner_week.adapter = adapterWeek
+        spinner_week.onItemSelectedListener = weekSpinnerListener
+
     }
 
     override fun onResume() {
@@ -101,39 +147,37 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         }
     }
 
+    override fun editTaskPage(task: Task) {
+        editBtn.setOnClickListener {
+
+            fragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            val editFragment = EditFragment(task)
+            fragmentControl.openPage("Edit Task", true, editFragment)
+
+        }
+    }
+
 
     private fun addDataSet() {
-        taskAdapter = TaskRecyclerAdapter(tasks, this)
 
+        taskAdapter = TaskRecyclerAdapter(tasks, this)
     }
 
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.categoryMenu -> {
-                    Log.i("TAGFragment", "category")
-                    val adapter = context?.let {
-                        ArrayAdapter.createFromResource(
-                            it,
-                            R.array.Categories,
-                            android.R.layout.simple_spinner_item
-                        )
-                    }
-                    adapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    spinner.adapter = adapter
+
+                    spinner_week.visibility = View.GONE
+                    spinner_category.visibility = View.VISIBLE
+
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.weekMenu -> {
-                    Log.i("TAGFragment", "week")
-                    val adapter = context?.let {
-                        ArrayAdapter.createFromResource(
-                            it,
-                            R.array.Week,
-                            android.R.layout.simple_spinner_item
-                        )
-                    }
-                    adapter?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    spinner.adapter = adapter
+
+                    spinner_category.visibility = View.GONE
+                    spinner_week.visibility = View.VISIBLE
+
                     return@OnNavigationItemSelectedListener true
                 }
 
@@ -147,6 +191,10 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         tasks.add(task)
     }
 
+    fun edit(task:Task){
+        GlobalScope.launch (Dispatchers.IO){
+            TaskManager.updateTaskWithTime(task)
+        }
     suspend fun filterTasksByCategory(category: Int) : List<Task>?{
         return TaskManager.getTasks(category)
     }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnLongClickListener
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +15,7 @@ import java.util.*
 
 
 class TaskRecyclerAdapter(
-    private val tasks: List<Task> = mutableListOf(),
+    private var tasks: List<Task> = mutableListOf(),
     private var clickListener: OnTaskClickListener
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -39,6 +40,7 @@ class TaskRecyclerAdapter(
 
         private val taskTextView: TextView = itemView.taskTextView
         private val dateTimeTextView: TextView = itemView.dateTimeTextView
+        private val editBtn:ImageButton=itemView.editBtn
 
         @SuppressLint("SetTextI18n")
         fun bind(task: Task, listener: OnTaskClickListener) {
@@ -69,13 +71,23 @@ class TaskRecyclerAdapter(
                 true
             }
 
+            editBtn.setOnClickListener {
+                listener.editTaskPage(task)
+            }
+
 
         }
 
 
     }
 
+    fun updateList (list: List<Task>) {
+        tasks=list
+        notifyDataSetChanged()
+    }
+
 }
+
 
 private fun amPm(hour: Int): String {
     if (hour == 0) {
@@ -93,4 +105,6 @@ private fun amPm(hour: Int): String {
 interface OnTaskClickListener {
     fun onItemClick(task: Task)
     fun onItemLongClick(task: Task)
+    fun editTaskPage(task:Task)
+
 }
