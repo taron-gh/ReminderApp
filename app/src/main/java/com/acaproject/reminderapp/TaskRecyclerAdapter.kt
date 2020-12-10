@@ -1,14 +1,11 @@
 package com.acaproject.reminderapp
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnLongClickListener
 import android.view.ViewGroup
-import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.list_item.view.*
 import java.util.*
@@ -40,7 +37,7 @@ class TaskRecyclerAdapter(
 
         private val taskTextView: TextView = itemView.taskTextView
         private val dateTimeTextView: TextView = itemView.dateTimeTextView
-        private val editBtn:ImageButton=itemView.editBtn
+        private val editBtn: ImageView = itemView.editBtn
 
         @SuppressLint("SetTextI18n")
         fun bind(task: Task, listener: OnTaskClickListener) {
@@ -81,8 +78,8 @@ class TaskRecyclerAdapter(
 
     }
 
-    fun updateList (list: List<Task>) {
-        tasks=list
+    fun updateList(list: List<Task>) {
+        tasks = list
         notifyDataSetChanged()
     }
 
@@ -105,6 +102,6 @@ private fun amPm(hour: Int): String {
 interface OnTaskClickListener {
     fun onItemClick(task: Task)
     fun onItemLongClick(task: Task)
-    fun editTaskPage(task:Task)
+    fun editTaskPage(task: Task)
 
 }
