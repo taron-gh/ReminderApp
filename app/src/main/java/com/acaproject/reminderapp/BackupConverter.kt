@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -31,8 +32,8 @@ object BackupConverter {
             val tasksObject = FileList(TaskManager.getAllTasks())
             val gson = Gson()
             val dateString = Calendar.getInstance()
-                .get(Calendar.DAY_OF_MONTH).toString() + "_" + Calendar
-                .getInstance().get(Calendar.MONTH).toString() + "_" + Calendar
+                .get(Calendar.DAY_OF_MONTH).toString() + "_" + (Calendar
+                .getInstance().get(Calendar.MONTH) + 1).toString() + "_" + Calendar
                 .getInstance().get(Calendar.YEAR).toString()
             val file = File(exportDirectory, "ReminderBackup__$dateString.rmdr")
             val fos = FileOutputStream(file)
@@ -40,8 +41,10 @@ object BackupConverter {
                 fos.write(gson.toJson(tasksObject).toByteArray())
                 fos.close()
             }
+            withContext(Dispatchers.Main){
+                Toast.makeText(context, "Backup created", Toast.LENGTH_SHORT).show()
+            }
 
-            Toast.makeText(context, "Backup created", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -74,10 +77,10 @@ object BackupConverter {
                     finalTasksList.add(task)
                 }
             }
+            if(mode == DELETE_ALL){
+                TaskManager.deleteAllTasks()
+            }
             for(task in finalTasksList){
-                if(mode == DELETE_ALL){
-                    TaskManager.deleteAllTasks()
-                }
                 TaskManager.insertTask(task)
             }
         }
@@ -85,17 +88,17 @@ object BackupConverter {
 
     }
 
-    fun checkOnStart(){
+    fun checkOnStart(context1: Context){
         if(importDirectory.listFiles().isNotEmpty()){
             if(importDirectory.listFiles()!!.size > 1){
-                val dialog = AlertDialog.Builder(context)
+                val dialog = AlertDialog.Builder(context1)
                     .setMessage("There are multiple backup files in import directory. Please leave only 1, and restart application.")
                     .setCancelable(true)
                     .setPositiveButton("Ok", null)
                     .create()
                 dialog.show()
             }else{
-                val dialog = AlertDialog.Builder(context)
+                val dialog = AlertDialog.Builder(context1)
                     .setMessage("There is a backup file available.")
                     .setCancelable(true)
                     .setPositiveButton("Add to existing data"){ _, _ ->
@@ -104,7 +107,7 @@ object BackupConverter {
                     }
                     .setNegativeButton("Clear existing  data"){ _, _ ->
                         val file = importDirectory.listFiles()!![0]
-                        readFromBackup(ADD_TO_EXISTING, file)
+                        readFromBackup(DELETE_ALL, file)
                     }
                     .setNeutralButton("Ignore", null)
                     .create()
@@ -112,4 +115,5 @@ object BackupConverter {
             }
         }
     }
+    data class FileList (val list: List<Task>)
 }

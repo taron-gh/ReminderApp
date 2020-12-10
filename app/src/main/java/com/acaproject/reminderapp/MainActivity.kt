@@ -37,7 +37,14 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        BackupConverter.checkOnStart()
+
+        backupCreateButton.setOnClickListener {
+            BackupConverter.createBackup()
+        }
+        backupCheckButton.setOnClickListener {
+            BackupConverter.checkOnStart(this@MainActivity)
+        }
+
         setSupportActionBar(toolBar)
         floatingBtn()
 
@@ -47,6 +54,7 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
 
 
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater

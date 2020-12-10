@@ -14,7 +14,16 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         app:titleTextColor="#F3E9E9" />
-
+    <Button
+        android:id="@+id/backupCreateButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create Backup"/>
+    <Button
+        android:id="@+id/backupCheckButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Check For Backups"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
