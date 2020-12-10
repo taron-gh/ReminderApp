@@ -83,6 +83,7 @@ object BackupConverter {
             for(task in finalTasksList){
                 TaskManager.insertTask(task)
             }
+            file.delete()
         }
 
 
@@ -113,7 +114,10 @@ object BackupConverter {
                     .create()
                 dialog.show()
             }
+        }else{
+            Toast.makeText(context, "There are no files", Toast.LENGTH_SHORT).show()
         }
+
     }
     data class FileList (val list: List<Task>)
 }

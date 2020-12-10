@@ -37,14 +37,7 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        backupCreateButton.setOnClickListener {
-            BackupConverter.createBackup()
-        }
-        backupCheckButton.setOnClickListener {
-            BackupConverter.checkOnStart(this@MainActivity)
-        }
-
+        BackupConverter.checkOnStart(this@MainActivity)
         setSupportActionBar(toolBar)
         floatingBtn()
 
