@@ -68,16 +68,12 @@ class FloatingFragment:Fragment() {
                     R.id.saturday -> chosenDayOfWeek = Calendar.SATURDAY
                     R.id.sunday -> chosenDayOfWeek = Calendar.SUNDAY
                 }
-
                 val calendar: Calendar = Calendar.getInstance()
-
                 calendar.set(Calendar.HOUR_OF_DAY, task_timePicker.hour)
                 calendar.set(Calendar.MINUTE, task_timePicker.minute)
-
-                while(calendar.get(Calendar.DAY_OF_WEEK) != chosenDayOfWeek){
+                while(chosenDayOfWeek != calendar.get(Calendar.DAY_OF_WEEK)){
                     calendar.add(Calendar.DAY_OF_WEEK, 1)
                 }
-
                 val task = Task(
                     0,
                     name = task_name.text.toString(),
@@ -89,9 +85,6 @@ class FloatingFragment:Fragment() {
                     postponed = false,
                     taskState = TaskManager.TASK_RUNNING
                 )
-
-
-
                 if(task_description.text.toString().isBlank()){
                     val dialog: AlertDialog = AlertDialog.Builder(activity)
                         .setMessage("Do you want to add task without description?")

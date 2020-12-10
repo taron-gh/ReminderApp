@@ -15,7 +15,7 @@ class NotificationService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val taskId  = intent?.getLongExtra("id", 0)
         Log.i("Service", taskId.toString())
-        GlobalScope.launch {
+        val job = GlobalScope.launch {
             withContext(Dispatchers.IO){
                 TaskManager.taskHit(taskId!!)
             }
@@ -23,6 +23,7 @@ class NotificationService : Service() {
         Log.i("Service", "1")
         if (intent?.action == "done") {
             GlobalScope.launch {
+                job.join()
                 withContext(Dispatchers.IO){
                     if(TaskManager.getTask(taskId!!).postponed){
                         TaskManager.taskPostponedDone(taskId)
@@ -35,6 +36,7 @@ class NotificationService : Service() {
             Log.i("Service", "2")
         }else if(intent?.action == "postpone"){
             GlobalScope.launch {
+                job.join()
                 withContext(Dispatchers.IO){
                     TaskManager.taskPostpone(taskId!!)
                     stopSelf()
@@ -43,6 +45,7 @@ class NotificationService : Service() {
             Log.i("Service", "3")
         }else if(intent?.action == "cancel"){
             GlobalScope.launch {
+                job.join()
                 withContext(Dispatchers.IO){
                     if(TaskManager.getTask(taskId!!).postponed){
                         TaskManager.taskPostponedCancel(taskId)

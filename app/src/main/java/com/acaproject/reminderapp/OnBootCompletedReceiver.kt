@@ -9,9 +9,9 @@ class OnBootCompletedReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(Intent(context, NotificationService::class.java))
+            context.startForegroundService(Intent(context, AlarmRecoveryAfterRebootService::class.java))
         } else {
-            context.startService(Intent(context, NotificationService::class.java))
+            context.startService(Intent(context, AlarmRecoveryAfterRebootService::class.java))
         }
 
     }

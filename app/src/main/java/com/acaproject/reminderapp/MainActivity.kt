@@ -37,23 +37,7 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        init()
-        val db: Database = Room.databaseBuilder(
-            this,
-            Database::class.java, "all"
-        ).build()
-        GlobalScope.launch {
-            db.tasksDao().insertTask(Task(0,
-                "aaa",
-                "aaaaa",
-                "aaaa",
-                0,
-                0,
-                false,
-                false,
-                TaskManager.TASK_RUNNING
-            ))
-        }
+        BackupConverter.checkOnStart(this@MainActivity)
         setSupportActionBar(toolBar)
         floatingBtn()
 
@@ -63,6 +47,7 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
 
 
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater

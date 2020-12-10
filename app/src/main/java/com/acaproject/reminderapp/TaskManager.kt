@@ -14,7 +14,8 @@ object TaskManager {
         context = context1
         db = Room.databaseBuilder(
             context,
-            Database::class.java, "all"
+            Database::class.java,
+            "tasks"
         ).build()
     }
     const val TASK_COMPLETED = 1
@@ -57,6 +58,13 @@ object TaskManager {
             }
             Alarms.setPostponedAlarm(task)
         }
+    }
+    suspend fun getAllTasks() : List<Task>{
+        return db.tasksDao().getAllTasks()
+    }
+
+    fun deleteAllTasks(){
+        db.clearAllTables()
     }
 
     suspend fun resetAlarms(){
@@ -119,18 +127,15 @@ object TaskManager {
         val originalCalendar = Calendar.getInstance()
         currentCalendar.timeInMillis = task.currentTime
         originalCalendar.timeInMillis = task.originalTime
-        if(currentCalendar.get(Calendar.DAY_OF_YEAR) != originalCalendar.get(Calendar.DAY_OF_YEAR) &&
-            Calendar.getInstance().compareTo(currentCalendar) > 0){
-            Alarms.setPostponedAlarm(task)
-            task.taskState = TASK_POSTPONED
-            task.postponed = true
-            updateTaskWithTime(task)
-        }else if(currentCalendar.get(Calendar.DAY_OF_YEAR) != originalCalendar.get(Calendar.DAY_OF_YEAR)){
-            currentCalendar.set(Calendar.DAY_OF_YEAR, Calendar.getInstance().get(Calendar.DAY_OF_YEAR))
+        currentCalendar.add(Calendar.DAY_OF_WEEK, 1)
+        Log.i("TAG", "postponed 1")
+        if(currentCalendar.get(Calendar.DAY_OF_WEEK) != originalCalendar.get(Calendar.DAY_OF_WEEK)){
+            Log.i("TAG", "postponed 2")
             task.currentTime = currentCalendar.timeInMillis
             task.taskState = TASK_POSTPONED
             task.postponed = true
-            updateTaskWithTime(task)
+            updateTask(task)
+            Alarms.setPostponedAlarm(task)
         }
     }
 
@@ -170,6 +175,12 @@ object TaskManager {
             task.postponed = false
             updateTaskWithTime(task)
         }else{
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = task.originalTime
+            calendar.add(Calendar.DAY_OF_YEAR, 7)
+            task.currentTime = calendar.timeInMillis
+            task.originalTime = calendar.timeInMillis
+            task.taskState = TASK_COMPLETED
             Alarms.cancelAlarm(task)
             Alarms.cancelPostponedAlarm(task)
         }
