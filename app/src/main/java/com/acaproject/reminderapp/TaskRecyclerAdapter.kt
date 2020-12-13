@@ -15,7 +15,7 @@ import java.util.*
 
 
 class TaskRecyclerAdapter(
-    private var tasks: List<Task> = mutableListOf(),
+    private var tasks: MutableList<Task> = mutableListOf(),
     private var clickListener: OnTaskClickListener
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -29,7 +29,7 @@ class TaskRecyclerAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is TaskViewHolder -> {
-                holder.bind(tasks[position], clickListener)
+                holder.bind(tasks[position], clickListener, position)
             }
         }
     }
@@ -43,7 +43,7 @@ class TaskRecyclerAdapter(
         private val editBtn:ImageButton=itemView.editBtn
 
         @SuppressLint("SetTextI18n")
-        fun bind(task: Task, listener: OnTaskClickListener) {
+        fun bind(task: Task, listener: OnTaskClickListener, position: Int) {
             val calendar = Calendar.getInstance()
             val context = itemView.context
             val daysOfWeek = listOf(
@@ -67,12 +67,12 @@ class TaskRecyclerAdapter(
             }
 
             itemView.setOnLongClickListener {
-                listener.onItemLongClick(task)
+                listener.onItemLongClick(task, position)
                 true
             }
 
             editBtn.setOnClickListener {
-                listener.editTaskPage(task)
+                listener.editTaskPage(task, position)
             }
 
 
@@ -82,7 +82,11 @@ class TaskRecyclerAdapter(
     }
 
     fun updateList (list: List<Task>) {
-        tasks=list
+        tasks=list as MutableList<Task>
+        notifyDataSetChanged()
+    }
+    fun updateListItem (position: Int, task: Task) {
+        tasks[position] = task
         notifyDataSetChanged()
     }
 
@@ -104,7 +108,7 @@ private fun amPm(hour: Int): String {
 
 interface OnTaskClickListener {
     fun onItemClick(task: Task)
-    fun onItemLongClick(task: Task)
-    fun editTaskPage(task:Task)
+    fun onItemLongClick(task: Task, position: Int)
+    fun editTaskPage(task:Task, position: Int)
 
 }
