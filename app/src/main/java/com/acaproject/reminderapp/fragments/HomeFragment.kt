@@ -38,12 +38,10 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         override fun onNothingSelected(p0: AdapterView<*>?) {
 
         }
-
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
             when(parent?.getItemAtPosition(position).toString()){
                "All Tasks" -> taskAdapter.updateList(tasks)
-
+               "Today" -> GlobalScope.launch {taskAdapter.updateList(TaskManager.getTodayTasks())}
             }
         }
 
@@ -55,11 +53,10 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         }
 
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
-            val filteredTasks = tasks.filter {
-                it.category == parent?.getItemAtPosition(position).toString()
-            }
-            taskAdapter.updateList(filteredTasks)
+//            val filteredTasks = tasks.filter {
+//                it.category == parent?.getItemAtPosition(position).toString()
+//            }
+            GlobalScope.launch {taskAdapter.updateList(TaskManager.getTasks(parent?.getItemAtPosition(position).toString()))}
         }
     }
 
@@ -68,9 +65,18 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         override fun onNothingSelected(p0: AdapterView<*>?) {
 
         }
-
-        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            GlobalScope.launch {
+                when(parent?.getItemAtPosition(position).toString()){
+                    getString(R.string.sunday) -> taskAdapter.updateList(TaskManager.getTaskByDayOfWeek(Calendar.SUNDAY))
+                    getString(R.string.monday) -> taskAdapter.updateList(TaskManager.getTaskByDayOfWeek(Calendar.MONDAY))
+                    getString(R.string.tuesday) -> taskAdapter.updateList(TaskManager.getTaskByDayOfWeek(Calendar.TUESDAY))
+                    getString(R.string.wednesday) -> taskAdapter.updateList(TaskManager.getTaskByDayOfWeek(Calendar.WEDNESDAY))
+                    getString(R.string.thursday) -> taskAdapter.updateList(TaskManager.getTaskByDayOfWeek(Calendar.THURSDAY))
+                    getString(R.string.friday) -> taskAdapter.updateList(TaskManager.getTaskByDayOfWeek(Calendar.FRIDAY))
+                    getString(R.string.saturday) -> taskAdapter.updateList(TaskManager.getTaskByDayOfWeek(Calendar.SATURDAY))
+                }
+            }
         }
 
     }
@@ -245,7 +251,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
             }
         }
         suspend fun filterTasksByCategory(category: Int): List<Task>? {
-            return TaskManager.getTasks(category)
+            return TaskManager.getTasks(getString(category))
         }
 
         suspend fun filterTasksByWeekday(weekday: Int): List<Task>? {

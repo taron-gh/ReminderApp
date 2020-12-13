@@ -81,9 +81,12 @@ class TaskRecyclerAdapter(
 
     }
 
-    fun updateList (list: List<Task>) {
-        tasks=list as MutableList<Task>
-        notifyDataSetChanged()
+    fun updateList (list: List<Task>?) {
+        if(list != null){
+            tasks=list as MutableList<Task>
+            notifyDataSetChanged()
+        }
+
     }
     fun updateListItem (position: Int, task: Task) {
         tasks[position] = task

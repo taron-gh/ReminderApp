@@ -93,8 +93,8 @@ object TaskManager {
         return returnList
     }
 
-    suspend fun getTasks(stringId: Int): List<Task>? {
-        return db.tasksDao().getTasks(context.getString(stringId))
+    suspend fun getTasks(string: String): List<Task>? {
+        return db.tasksDao().getTasks(string)
     }
 
     suspend fun getTask(id: Long): Task{
