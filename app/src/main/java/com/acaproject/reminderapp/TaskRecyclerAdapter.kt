@@ -108,7 +108,7 @@ private fun amPm(hour: Int): String {
 
 interface OnTaskClickListener {
     fun onItemClick(task: Task)
-    fun onItemLongClick(task: Task)
-    fun editTaskPage(task:Task)
+    fun onItemLongClick(task: Task, position: Int)
+    fun editTaskPage(task:Task, position: Int)
 
 }
