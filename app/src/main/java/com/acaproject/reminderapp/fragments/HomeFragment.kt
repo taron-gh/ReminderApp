@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.acaproject.reminderapp.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -171,7 +170,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         }
     }
 
-    override fun onItemLongClick(task: Task) {
+    override fun onItemLongClick(task: Task, position: Int) {
         val builder = AlertDialog.Builder(activity)
         builder.apply {
             setMessage("Are you sure you want to delete this task?")
