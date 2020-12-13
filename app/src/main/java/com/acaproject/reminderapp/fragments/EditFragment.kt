@@ -1,24 +1,22 @@
-package com.acaproject.reminderapp
+package com.acaproject.reminderapp.fragments
 
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.acaproject.reminderapp.FragmentControl
+import com.acaproject.reminderapp.R
+import com.acaproject.reminderapp.Task
+import com.acaproject.reminderapp.TaskManager
 import kotlinx.android.synthetic.main.add_task_page.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.properties.Delegates
 
 class EditFragment(val task: Task) :Fragment() {
     private lateinit var fragmentControl: FragmentControl
@@ -99,7 +97,6 @@ class EditFragment(val task: Task) :Fragment() {
                     postponed = false,
                     taskState = TaskManager.TASK_RUNNING
                 )
-
 
 
                 if(task_description.text.toString().isBlank()){

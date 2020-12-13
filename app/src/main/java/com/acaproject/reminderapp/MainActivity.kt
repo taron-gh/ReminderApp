@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
@@ -24,7 +25,6 @@ interface FragmentControl {
     fun updateToolBar(title: String, hasBack: Boolean)
     fun sendTask(task: Task)
     fun editTask(task: Task)
-
 }
 
 const val CHANNEL_DEFAULT = "channel"
@@ -35,6 +35,8 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
     private val homeFragment = HomeFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         init()
@@ -55,11 +57,9 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
             ))
         }
         setSupportActionBar(toolBar)
-        floatingBtn()
+     //   floatingBtn()
 
         openPage("Home", false, homeFragment)
-
-        floatingBtn()
 
 
     }
@@ -136,7 +136,6 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
             supportFragmentManager.popBackStack(null, POP_BACK_STACK_INCLUSIVE)
             val floatingFragment = FloatingFragment()
             openPage("Add Task", true, floatingFragment)
-
 
         }
     }

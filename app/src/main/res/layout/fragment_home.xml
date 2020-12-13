@@ -9,33 +9,51 @@
     android:orientation="vertical"
     tools:context=".fragments.HomeFragment">
 
-    <Spinner
-        android:id="@+id/spinner_category"
+    <LinearLayout
+        android:id="@+id/spinners"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:entries="@array/Categories"
-        android:padding="5dp"
-         />
+        android:orientation="horizontal">
 
-    <Spinner
-        android:id="@+id/spinner_week"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:entries="@array/Week"
-        android:padding="5dp"
-        android:visibility="gone"
-        />
+        <Spinner
+            android:id="@+id/spinner_today"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:entries="@array/Today"
+            android:padding="5dp"
+            />
+
+        <Spinner
+            android:id="@+id/spinner_category"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:entries="@array/Categories"
+            android:padding="5dp"
+            />
+
+        <Spinner
+            android:id="@+id/spinner_week"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:entries="@array/Week"
+            android:padding="5dp"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottomNavBar"
-        android:layout_below="@+id/spinner_category"
+        android:layout_below="@+id/spinners"
         android:clipToPadding="false"
         android:padding="16dp" />
 
@@ -46,6 +64,8 @@
         android:background="@color/colorPrimary"
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_nav_menu" />
+
+
 
 
 

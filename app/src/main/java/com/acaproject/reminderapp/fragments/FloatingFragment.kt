@@ -49,7 +49,7 @@ class FloatingFragment:Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         task_cancelBtn.setOnClickListener {
-
+            fragmentManager?.popBackStack()
         }
 
         task_okBtn.setOnClickListener {

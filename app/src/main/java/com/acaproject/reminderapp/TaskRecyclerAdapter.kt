@@ -20,6 +20,7 @@ class TaskRecyclerAdapter(
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    var adapterPosition: Int = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return TaskViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
@@ -27,11 +28,15 @@ class TaskRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        adapterPosition = position
         when (holder) {
             is TaskViewHolder -> {
                 holder.bind(tasks[position], clickListener)
+
             }
+
         }
+
     }
 
     override fun getItemCount(): Int = tasks.size
@@ -40,7 +45,7 @@ class TaskRecyclerAdapter(
 
         private val taskTextView: TextView = itemView.taskTextView
         private val dateTimeTextView: TextView = itemView.dateTimeTextView
-        private val editBtn:ImageButton=itemView.editBtn
+        private val editBtn: ImageButton = itemView.editBtn
 
         @SuppressLint("SetTextI18n")
         fun bind(task: Task, listener: OnTaskClickListener) {
@@ -67,23 +72,27 @@ class TaskRecyclerAdapter(
             }
 
             itemView.setOnLongClickListener {
-                listener.onItemLongClick(task)
+                listener.onItemLongClick(task, adapterPosition)
                 true
             }
 
             editBtn.setOnClickListener {
-                listener.editTaskPage(task)
-            }
+                listener.editTaskPage(task, adapterPosition)
 
+            }
 
         }
 
-
     }
 
-    fun updateList (list: List<Task>) {
-        tasks=list
+    fun updateList(list: List<Task>) {
+        tasks = list
         notifyDataSetChanged()
+    }
+
+    fun changeItem() {
+
+        notifyItemChanged(adapterPosition)
     }
 
 }
@@ -104,7 +113,6 @@ private fun amPm(hour: Int): String {
 
 interface OnTaskClickListener {
     fun onItemClick(task: Task)
-    fun onItemLongClick(task: Task)
-    fun editTaskPage(task:Task)
-
+    fun onItemLongClick(task: Task, position: Int)
+    fun editTaskPage(task: Task, position: Int)
 }

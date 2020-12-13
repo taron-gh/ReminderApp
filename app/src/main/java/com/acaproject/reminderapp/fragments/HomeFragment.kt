@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,13 +14,14 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.acaproject.reminderapp.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.list_item.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.IllegalStateException
-import java.util.*
+import java.text.FieldPosition
 
 
 class HomeFragment : Fragment(), OnTaskClickListener {
@@ -29,6 +29,22 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     private lateinit var fragmentControl: FragmentControl
     private lateinit var addedTask: Task
     private val tasks = mutableListOf<Task>()
+
+
+    private val todaySpinnerListener = object : AdapterView.OnItemSelectedListener {
+        override fun onNothingSelected(p0: AdapterView<*>?) {
+
+        }
+
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+            when(parent?.getItemAtPosition(position).toString()){
+               "All Tasks" -> taskAdapter.updateList(tasks)
+
+            }
+        }
+
+    }
 
     private val categorySpinnerListener = object : AdapterView.OnItemSelectedListener {
         override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -55,6 +71,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         }
 
     }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -85,6 +102,20 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     }
 
     private fun initSpinners() {
+
+        val adapterToday = context?.let {
+            ArrayAdapter.createFromResource(
+                it,
+                R.array.Today,
+                android.R.layout.simple_spinner_item
+            )
+        }
+
+        adapterToday?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner_today.adapter = adapterToday
+        spinner_today.onItemSelectedListener = todaySpinnerListener
+
+
         val adapterCategory = context?.let {
             ArrayAdapter.createFromResource(
                 it,
@@ -105,10 +136,10 @@ class HomeFragment : Fragment(), OnTaskClickListener {
             )
         }
 
-
         adapterWeek?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner_week.adapter = adapterWeek
         spinner_week.onItemSelectedListener = weekSpinnerListener
+
 
     }
 
@@ -137,7 +168,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         }
     }
 
-    override fun onItemLongClick(task: Task) {
+    override fun onItemLongClick(task: Task, position: Int) {
         val builder = AlertDialog.Builder(activity)
         builder.apply {
             setMessage("Are you sure you want to delete this task?")
@@ -150,11 +181,11 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         }
     }
 
-    override fun editTaskPage(task: Task) {
+    override fun editTaskPage(task: Task, position: Int) {
 
-            val editFragment = EditFragment(task)
+            val editFragment =
+                EditFragment(task)
             fragmentControl.openPage("Edit Task", true, editFragment)
-
 
     }
 
@@ -167,8 +198,19 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
+
+                R.id.todayMenu ->{
+
+                    spinner_category.visibility = View.GONE
+                    spinner_week.visibility = View.GONE
+                    spinner_today.visibility=View.VISIBLE
+
+                    return@OnNavigationItemSelectedListener true
+                }
+
                 R.id.categoryMenu -> {
 
+                    spinner_today.visibility=View.GONE
                     spinner_week.visibility = View.GONE
                     spinner_category.visibility = View.VISIBLE
 
@@ -176,6 +218,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
                 }
                 R.id.weekMenu -> {
 
+                    spinner_today.visibility=View.GONE
                     spinner_category.visibility = View.GONE
                     spinner_week.visibility = View.VISIBLE
 
@@ -196,13 +239,18 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         GlobalScope.launch(Dispatchers.IO) {
             TaskManager.updateTaskWithTime(task)
         }
-        suspend fun filterTasksByCategory(category: Int): List<Task>? {
-            return TaskManager.getTasks(category)
-        }
 
-        suspend fun filterTasksByWeekday(weekday: Int): List<Task>? {
-            return TaskManager.getTaskByDayOfWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
-        }
+
+
+//        suspend fun filterTasksByCategory(category: Int): List<Task>? {
+//            return TaskManager.getTasks(category)
+//        }
+//
+//        suspend fun filterTasksByWeekday(weekday: Int): List<Task>? {
+//            return TaskManager.getTaskByDayOfWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
+//        }
 
     }
+
+
 }
