@@ -1,5 +1,7 @@
 package com.acaproject.reminderapp.fragments
 
+import android.R.attr.fragment
+import android.R.attr.key
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -10,7 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.acaproject.reminderapp.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -20,6 +22,8 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.*
 import java.lang.IllegalStateException
 import java.text.FieldPosition
 
@@ -71,7 +75,6 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         }
 
     }
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -136,10 +139,10 @@ class HomeFragment : Fragment(), OnTaskClickListener {
             )
         }
 
+
         adapterWeek?.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner_week.adapter = adapterWeek
         spinner_week.onItemSelectedListener = weekSpinnerListener
-
 
     }
 
@@ -168,7 +171,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         }
     }
 
-    override fun onItemLongClick(task: Task, position: Int) {
+    override fun onItemLongClick(task: Task) {
         val builder = AlertDialog.Builder(activity)
         builder.apply {
             setMessage("Are you sure you want to delete this task?")
@@ -182,11 +185,11 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     }
 
     override fun editTaskPage(task: Task, position: Int) {
-
-            val editFragment =
-                EditFragment(task)
+            val editFragment = EditFragment(task)
+            val bundle = Bundle()
+            bundle.putInt("position", position)
+            editFragment.arguments = bundle
             fragmentControl.openPage("Edit Task", true, editFragment)
-
     }
 
 
@@ -235,22 +238,20 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         tasks.add(task)
     }
 
-    fun edit(task: Task) {
+    fun edit(task: Task, position: Int) {
         GlobalScope.launch(Dispatchers.IO) {
             TaskManager.updateTaskWithTime(task)
+            withContext(Dispatchers.Main){
+                taskAdapter.updateListItem(position, task)
+            }
+        }
+        suspend fun filterTasksByCategory(category: Int): List<Task>? {
+            return TaskManager.getTasks(category)
         }
 
-
-
-//        suspend fun filterTasksByCategory(category: Int): List<Task>? {
-//            return TaskManager.getTasks(category)
-//        }
-//
-//        suspend fun filterTasksByWeekday(weekday: Int): List<Task>? {
-//            return TaskManager.getTaskByDayOfWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
-//        }
+        suspend fun filterTasksByWeekday(weekday: Int): List<Task>? {
+            return TaskManager.getTaskByDayOfWeek(Calendar.getInstance().get(Calendar.DAY_OF_WEEK))
+        }
 
     }
-
-
 }

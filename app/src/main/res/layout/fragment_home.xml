@@ -55,7 +55,7 @@
         android:layout_above="@+id/bottomNavBar"
         android:layout_below="@+id/spinners"
         android:clipToPadding="false"
-        android:padding="16dp" />
+        />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavBar"

@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnLongClickListener
 import android.view.ViewGroup
-import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -15,12 +15,11 @@ import java.util.*
 
 
 class TaskRecyclerAdapter(
-    private var tasks: List<Task> = mutableListOf(),
+    private var tasks: MutableList<Task> = mutableListOf(),
     private var clickListener: OnTaskClickListener
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var adapterPosition: Int = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return TaskViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
@@ -28,15 +27,11 @@ class TaskRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        adapterPosition = position
         when (holder) {
             is TaskViewHolder -> {
-                holder.bind(tasks[position], clickListener)
-
+                holder.bind(tasks[position], clickListener, position)
             }
-
         }
-
     }
 
     override fun getItemCount(): Int = tasks.size
@@ -45,10 +40,10 @@ class TaskRecyclerAdapter(
 
         private val taskTextView: TextView = itemView.taskTextView
         private val dateTimeTextView: TextView = itemView.dateTimeTextView
-        private val editBtn: ImageButton = itemView.editBtn
+        private val editBtn: ImageView = itemView.editBtn
 
         @SuppressLint("SetTextI18n")
-        fun bind(task: Task, listener: OnTaskClickListener) {
+        fun bind(task: Task, listener: OnTaskClickListener, position: Int) {
             val calendar = Calendar.getInstance()
             val context = itemView.context
             val daysOfWeek = listOf(
@@ -72,27 +67,27 @@ class TaskRecyclerAdapter(
             }
 
             itemView.setOnLongClickListener {
-                listener.onItemLongClick(task, adapterPosition)
+                listener.onItemLongClick(task, position)
                 true
             }
 
             editBtn.setOnClickListener {
-                listener.editTaskPage(task, adapterPosition)
-
+                listener.editTaskPage(task, position)
             }
+
 
         }
 
+
     }
 
-    fun updateList(list: List<Task>) {
-        tasks = list
+    fun updateList (list: List<Task>) {
+        tasks=list as MutableList<Task>
         notifyDataSetChanged()
     }
-
-    fun changeItem() {
-
-        notifyItemChanged(adapterPosition)
+    fun updateListItem (position: Int, task: Task) {
+        tasks[position] = task
+        notifyDataSetChanged()
     }
 
 }
@@ -114,5 +109,6 @@ private fun amPm(hour: Int): String {
 interface OnTaskClickListener {
     fun onItemClick(task: Task)
     fun onItemLongClick(task: Task, position: Int)
-    fun editTaskPage(task: Task, position: Int)
+    fun editTaskPage(task:Task, position: Int)
+
 }

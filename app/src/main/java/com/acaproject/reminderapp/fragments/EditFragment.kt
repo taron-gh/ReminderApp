@@ -1,5 +1,7 @@
 package com.acaproject.reminderapp.fragments
 
+import android.R.attr.defaultValue
+import android.R.attr.key
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
@@ -18,9 +20,10 @@ import com.acaproject.reminderapp.TaskManager
 import kotlinx.android.synthetic.main.add_task_page.*
 import java.util.*
 
+
 class EditFragment(val task: Task) :Fragment() {
     private lateinit var fragmentControl: FragmentControl
-
+    private var itemPosition: Int = 0
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is FragmentControl) {
@@ -31,6 +34,13 @@ class EditFragment(val task: Task) :Fragment() {
 
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val bundle = this.arguments
+        if (bundle != null) {
+            itemPosition = bundle.getInt("position", defaultValue)
+        }
+    }
 
 
     override fun onCreateView(
@@ -51,7 +61,10 @@ class EditFragment(val task: Task) :Fragment() {
         task_name.setText(task.name)
         task_description.setText(task.description)
         task_checkBox.isChecked=task.repeatable
-        task_timePicker.minute=(task.originalTime.compareTo(Long.MAX_VALUE))
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = task.originalTime
+        task_timePicker.minute=calendar.get(Calendar.MINUTE)
+        task_timePicker.hour=calendar.get(Calendar.HOUR)
 
         val radioButtonID: Int = task_week.checkedRadioButtonId
 
@@ -87,7 +100,7 @@ class EditFragment(val task: Task) :Fragment() {
                 }
 
                 val newTask = Task(
-                    0,
+                    task.taskId,
                     name = task_name.text.toString(),
                     category = task_spinner.selectedItem.toString(),
                     description = task_description.text.toString(),
@@ -106,14 +119,14 @@ class EditFragment(val task: Task) :Fragment() {
                         .setPositiveButton(
                             "Yes"
                         ) { _, _ ->
-                            fragmentControl.editTask(newTask)
+                            fragmentControl.editTask(newTask, itemPosition)
                         }
                         .setNegativeButton("Cancel", null)
                         .create()
 
                 }
 
-                fragmentControl.editTask(newTask)
+                fragmentControl.editTask(newTask, itemPosition)
                 fragmentManager?.popBackStack()
 
 

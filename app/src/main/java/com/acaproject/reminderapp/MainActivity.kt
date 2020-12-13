@@ -24,7 +24,8 @@ interface FragmentControl {
     fun openPage(title: String, hasBack: Boolean, chosenFragment: Fragment)
     fun updateToolBar(title: String, hasBack: Boolean)
     fun sendTask(task: Task)
-    fun editTask(task: Task)
+    fun editTask(task: Task, position: Int)
+
 }
 
 const val CHANNEL_DEFAULT = "channel"
@@ -35,31 +36,15 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
     private val homeFragment = HomeFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        init()
-        val db: Database = Room.databaseBuilder(
-            this,
-            Database::class.java, "all"
-        ).build()
-        GlobalScope.launch {
-            db.tasksDao().insertTask(Task(0,
-                "aaa",
-                "aaaaa",
-                "aaaa",
-                0,
-                0,
-                false,
-                false,
-                TaskManager.TASK_RUNNING
-            ))
-        }
+        BackupConverter.checkOnStart(this@MainActivity)
         setSupportActionBar(toolBar)
-     //   floatingBtn()
+        floatingBtn()
 
         openPage("Home", false, homeFragment)
+
+        floatingBtn()
 
 
     }
@@ -125,9 +110,9 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
 
     }
 
-    override fun editTask(task: Task) {
+    override fun editTask(task: Task, position: Int) {
 
-        homeFragment.edit(task)
+        homeFragment.edit(task, position)
     }
 
     private fun floatingBtn() {
@@ -136,6 +121,7 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
             supportFragmentManager.popBackStack(null, POP_BACK_STACK_INCLUSIVE)
             val floatingFragment = FloatingFragment()
             openPage("Add Task", true, floatingFragment)
+
 
         }
     }
