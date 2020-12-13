@@ -41,7 +41,12 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             when(parent?.getItemAtPosition(position).toString()){
                "All Tasks" -> taskAdapter.updateList(tasks)
-               "Today" -> GlobalScope.launch {taskAdapter.updateList(TaskManager.getTodayTasks())}
+               "Today" -> GlobalScope.launch {
+                   val list = TaskManager.getTodayTasks()
+                   withContext(Dispatchers.Main){
+                       taskAdapter.updateList(list)
+                   }
+               }
             }
         }
 
@@ -56,7 +61,12 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 //            val filteredTasks = tasks.filter {
 //                it.category == parent?.getItemAtPosition(position).toString()
 //            }
-            GlobalScope.launch {taskAdapter.updateList(TaskManager.getTasks(parent?.getItemAtPosition(position).toString()))}
+            GlobalScope.launch {
+                val list = TaskManager.getTasks(parent?.getItemAtPosition(position).toString())
+                withContext(Dispatchers.Main) {
+                    taskAdapter.updateList(list)
+                }
+            }
         }
     }
 
@@ -68,13 +78,48 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             GlobalScope.launch {
                 when(parent?.getItemAtPosition(position).toString()){
-                    getString(R.string.sunday) -> taskAdapter.updateList(TaskManager.getTaskByDayOfWeek(Calendar.SUNDAY))
-                    getString(R.string.monday) -> taskAdapter.updateList(TaskManager.getTaskByDayOfWeek(Calendar.MONDAY))
-                    getString(R.string.tuesday) -> taskAdapter.updateList(TaskManager.getTaskByDayOfWeek(Calendar.TUESDAY))
-                    getString(R.string.wednesday) -> taskAdapter.updateList(TaskManager.getTaskByDayOfWeek(Calendar.WEDNESDAY))
-                    getString(R.string.thursday) -> taskAdapter.updateList(TaskManager.getTaskByDayOfWeek(Calendar.THURSDAY))
-                    getString(R.string.friday) -> taskAdapter.updateList(TaskManager.getTaskByDayOfWeek(Calendar.FRIDAY))
-                    getString(R.string.saturday) -> taskAdapter.updateList(TaskManager.getTaskByDayOfWeek(Calendar.SATURDAY))
+                    getString(R.string.sunday) -> {
+                        val list = TaskManager.getTaskByDayOfWeek(Calendar.SUNDAY)
+                        withContext(Dispatchers.Main) {
+                            taskAdapter.updateList(list)
+                        }
+                    }
+                    getString(R.string.monday) -> {
+                        val list = TaskManager.getTaskByDayOfWeek(Calendar.MONDAY)
+                        withContext(Dispatchers.Main) {
+                            taskAdapter.updateList(list)
+                        }
+                    }
+                    getString(R.string.tuesday) -> {
+                        val list = TaskManager.getTaskByDayOfWeek(Calendar.TUESDAY)
+                        withContext(Dispatchers.Main) {
+                            taskAdapter.updateList(list)
+                        }
+                    }
+                    getString(R.string.wednesday) -> {
+                        val list = TaskManager.getTaskByDayOfWeek(Calendar.WEDNESDAY)
+                        withContext(Dispatchers.Main) {
+                            taskAdapter.updateList(list)
+                        }
+                    }
+                    getString(R.string.thursday) -> {
+                        val list = TaskManager.getTaskByDayOfWeek(Calendar.THURSDAY)
+                        withContext(Dispatchers.Main) {
+                            taskAdapter.updateList(list)
+                        }
+                    }
+                    getString(R.string.friday) -> {
+                        val list = TaskManager.getTaskByDayOfWeek(Calendar.FRIDAY)
+                        withContext(Dispatchers.Main) {
+                            taskAdapter.updateList(list)
+                        }
+                    }
+                    getString(R.string.saturday) -> {
+                        val list = TaskManager.getTaskByDayOfWeek(Calendar.SATURDAY)
+                        withContext(Dispatchers.Main) {
+                            taskAdapter.updateList(list)
+                        }
+                    }
                 }
             }
         }
