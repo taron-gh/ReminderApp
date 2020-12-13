@@ -114,8 +114,6 @@ object BackupConverter {
                     .create()
                 dialog.show()
             }
-        }else{
-            Toast.makeText(context, "There are no files", Toast.LENGTH_SHORT).show()
         }
 
     }
