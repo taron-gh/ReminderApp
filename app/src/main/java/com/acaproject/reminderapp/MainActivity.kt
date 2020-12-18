@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import androidx.room.Room
 import com.acaproject.reminderapp.fragments.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -40,13 +41,7 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
         setContentView(R.layout.activity_main)
         BackupConverter.checkOnStart(this@MainActivity)
         setSupportActionBar(toolBar)
-        floatingBtn()
-
         openPage("Home", false, homeFragment)
-
-        floatingBtn()
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -115,16 +110,6 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
         homeFragment.edit(task, position)
     }
 
-    private fun floatingBtn() {
-        floatingBtn.setOnClickListener {
-
-            supportFragmentManager.popBackStack(null, POP_BACK_STACK_INCLUSIVE)
-            val floatingFragment = FloatingFragment()
-            openPage("Add Task", true, floatingFragment)
-
-
-        }
-    }
 
     private fun init(){
         TaskManager.init(this)
