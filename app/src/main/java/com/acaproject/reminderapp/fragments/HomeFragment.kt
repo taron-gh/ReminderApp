@@ -18,10 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.util.*
 import java.lang.IllegalStateException
 import java.text.FieldPosition
@@ -38,15 +35,25 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         override fun onNothingSelected(p0: AdapterView<*>?) {
 
         }
+
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-            when(parent?.getItemAtPosition(position).toString()){
-               "All Tasks" -> taskAdapter.updateList(tasks)
-               "Today" -> GlobalScope.launch {
-                   val list = TaskManager.getTodayTasks()
-                   withContext(Dispatchers.Main){
-                       taskAdapter.updateList(list)
-                   }
-               }
+            when (parent?.getItemAtPosition(position).toString()) {
+                "All Tasks" ->{
+                    GlobalScope.launch {
+                        val list= TaskManager.getAllTasks()
+                        withContext(Dispatchers.Main){
+                            taskAdapter.updateList(list)
+                        }
+                    }
+                }
+                "Today" -> {
+                    GlobalScope.launch {
+                       val list= TaskManager.getTodayTasks()
+                       withContext(Dispatchers.Main){
+                           taskAdapter.updateList(list)
+                       }
+                    }
+                }
             }
         }
 
@@ -75,9 +82,10 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         override fun onNothingSelected(p0: AdapterView<*>?) {
 
         }
+
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             GlobalScope.launch {
-                when(parent?.getItemAtPosition(position).toString()){
+                when (parent?.getItemAtPosition(position).toString()) {
                     getString(R.string.sunday) -> {
                         val list = TaskManager.getTaskByDayOfWeek(Calendar.SUNDAY)
                         withContext(Dispatchers.Main) {
@@ -235,11 +243,11 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     }
 
     override fun editTaskPage(task: Task, position: Int) {
-            val editFragment = EditFragment(task)
-            val bundle = Bundle()
-            bundle.putInt("position", position)
-            editFragment.arguments = bundle
-            fragmentControl.openPage("Edit Task", true, editFragment)
+        val editFragment = EditFragment(task)
+        val bundle = Bundle()
+        bundle.putInt("position", position)
+        editFragment.arguments = bundle
+        fragmentControl.openPage("Edit Task", true, editFragment)
     }
 
 
@@ -252,18 +260,18 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
 
-                R.id.todayMenu ->{
+                R.id.todayMenu -> {
 
                     spinner_category.visibility = View.GONE
                     spinner_week.visibility = View.GONE
-                    spinner_today.visibility=View.VISIBLE
+                    spinner_today.visibility = View.VISIBLE
 
                     return@OnNavigationItemSelectedListener true
                 }
 
                 R.id.categoryMenu -> {
 
-                    spinner_today.visibility=View.GONE
+                    spinner_today.visibility = View.GONE
                     spinner_week.visibility = View.GONE
                     spinner_category.visibility = View.VISIBLE
 
@@ -271,7 +279,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
                 }
                 R.id.weekMenu -> {
 
-                    spinner_today.visibility=View.GONE
+                    spinner_today.visibility = View.GONE
                     spinner_category.visibility = View.GONE
                     spinner_week.visibility = View.VISIBLE
 
