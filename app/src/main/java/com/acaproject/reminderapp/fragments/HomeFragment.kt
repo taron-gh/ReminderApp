@@ -291,10 +291,8 @@ class HomeFragment : Fragment(), OnTaskClickListener {
     fun edit(task: Task, position: Int) {
         GlobalScope.launch(Dispatchers.IO) {
             TaskManager.updateTaskWithTime(task)
-            withContext(Dispatchers.Main){
-                taskAdapter.updateListItem(position, task)
-            }
         }
+        taskAdapter.updateListItem(position, task)
         suspend fun filterTasksByCategory(category: Int): List<Task>? {
             return TaskManager.getTasks(getString(category))
         }

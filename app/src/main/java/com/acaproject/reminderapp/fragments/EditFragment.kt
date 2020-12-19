@@ -120,14 +120,18 @@ class EditFragment(val task: Task) :Fragment() {
                             "Yes"
                         ) { _, _ ->
                             fragmentControl.editTask(newTask, itemPosition)
+                            fragmentManager?.popBackStack()
                         }
                         .setNegativeButton("Cancel", null)
                         .create()
-
+                    dialog.show()
+                }else{
+                    fragmentControl.editTask(newTask, itemPosition)
+                    fragmentManager?.popBackStack()
                 }
 
-                fragmentControl.editTask(newTask, itemPosition)
-                fragmentManager?.popBackStack()
+
+
 
 
             }else{
