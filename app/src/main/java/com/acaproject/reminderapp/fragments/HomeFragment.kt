@@ -12,11 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.acaproject.reminderapp.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -57,6 +56,17 @@ class HomeFragment : Fragment(), OnTaskClickListener {
             }
         }
 
+    }
+
+    private fun floatingBtn() {
+        floatingBtn.setOnClickListener {
+
+            activity?.supportFragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            val floatingFragment = FloatingFragment()
+            fragmentControl.openPage("Add Task", true, floatingFragment)
+
+
+        }
     }
 
     private val categorySpinnerListener = object : AdapterView.OnItemSelectedListener {
@@ -156,6 +166,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         addDataSet()
         initRecyclerView()
         initSpinners()
+        floatingBtn()
 
         bottomNavBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
