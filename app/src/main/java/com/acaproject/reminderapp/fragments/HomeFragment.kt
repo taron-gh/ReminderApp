@@ -34,7 +34,6 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         override fun onNothingSelected(p0: AdapterView<*>?) {
 
         }
-
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             when (parent?.getItemAtPosition(position).toString()) {
                 "All Tasks" ->{
@@ -272,20 +271,19 @@ class HomeFragment : Fragment(), OnTaskClickListener {
             when (item.itemId) {
 
                 R.id.todayMenu -> {
-
                     spinner_category.visibility = View.GONE
                     spinner_week.visibility = View.GONE
                     spinner_today.visibility = View.VISIBLE
 
+                    spinner_today.setSelection(spinner_today.selectedItemPosition)
                     return@OnNavigationItemSelectedListener true
                 }
 
                 R.id.categoryMenu -> {
-
                     spinner_today.visibility = View.GONE
                     spinner_week.visibility = View.GONE
                     spinner_category.visibility = View.VISIBLE
-
+                    spinner_category.setSelection(spinner_category.selectedItemPosition)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.weekMenu -> {
@@ -293,7 +291,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
                     spinner_today.visibility = View.GONE
                     spinner_category.visibility = View.GONE
                     spinner_week.visibility = View.VISIBLE
-
+                    spinner_week.setSelection(spinner_week.selectedItemPosition)
                     return@OnNavigationItemSelectedListener true
                 }
 

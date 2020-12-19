@@ -72,29 +72,37 @@ object TaskManager {
     }
     suspend fun  getTaskByDayOfWeek(dayOfWeek: Int) : List<Task>?{
         val returnList: MutableList<Task> = db.tasksDao().getAllTasks() as MutableList<Task>
-        val removeList = ArrayList<Task>()
-        for(task in returnList){
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = task.originalTime
-            if(calendar.get(Calendar.DAY_OF_WEEK) != dayOfWeek){
-                removeList.add(task)
-            }
+//        val removeList = ArrayList<Task>()
+//        for(task in returnList){
+//            val calendar = Calendar.getInstance()
+//            calendar.timeInMillis = task.originalTime
+//            if(calendar.get(Calendar.DAY_OF_WEEK) != dayOfWeek){
+//                removeList.add(task)
+//            }
+//        }
+        //returnList.removeAll(removeList)
+        val calendar = Calendar.getInstance()
+        return returnList.filter{
+            calendar.timeInMillis = it.originalTime
+            calendar.get(Calendar.DAY_OF_WEEK) == dayOfWeek
         }
-        returnList.removeAll(removeList)
-        return returnList
     }
     suspend fun getTodayTasks(): List<Task>? {
         val returnList: MutableList<Task> = db.tasksDao().getAllTasks() as MutableList<Task>
-        val removeList = ArrayList<Task>()
-        for(task in returnList){
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = task.currentTime
-            if(calendar.get(Calendar.DAY_OF_WEEK) != Calendar.getInstance().get(Calendar.DAY_OF_WEEK)){
-                removeList.add(task)
-            }
+//        val removeList = ArrayList<Task>()
+//        for(task in returnList){
+//            val calendar = Calendar.getInstance()
+//            calendar.timeInMillis = task.currentTime
+//            if(calendar.get(Calendar.DAY_OF_WEEK) != Calendar.getInstance().get(Calendar.DAY_OF_WEEK)){
+//                removeList.add(task)
+//            }
+//        }
+//        returnList.removeAll(removeList)
+        val calendar = Calendar.getInstance()
+        return returnList.filter{
+            calendar.timeInMillis = it.currentTime
+            calendar.get(Calendar.DAY_OF_WEEK) == Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
         }
-        returnList.removeAll(removeList)
-        return returnList
     }
 
     suspend fun getTasks(string: String): List<Task>? {
