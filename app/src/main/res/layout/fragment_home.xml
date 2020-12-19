@@ -65,21 +65,6 @@
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_nav_menu" />
 
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/floatingBtn"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:layout_marginBottom="40dp"-->
-<!--        -->
-<!--        android:layout_above="@+id/bottomNavBar"-->
-<!--        android:elevation="6dp"-->
-<!--        android:src="@drawable/add_floatingbtn"-->
-<!--        app:backgroundTint="@color/colorPrimary"-->
-<!--        app:fabSize="normal"-->
-
-<!--        />-->
-
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingBtn"
