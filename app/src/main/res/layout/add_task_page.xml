@@ -31,63 +31,69 @@
         android:layout_marginTop="12dp"
         android:timePickerMode="spinner" />
 
-    <RadioGroup
-        android:id="@+id/task_week"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/radioLayout"
         android:layout_below="@+id/task_timePicker"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/monday"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RadioGroup
+            android:id="@+id/task_week"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mon" />
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/tuesday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tue" />
+            <RadioButton
+                android:id="@+id/monday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mon" />
 
-        <RadioButton
-            android:id="@+id/wednesday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/wed" />
+            <RadioButton
+                android:id="@+id/tuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tue" />
 
-        <RadioButton
-            android:id="@+id/thursday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/thu" />
+            <RadioButton
+                android:id="@+id/wednesday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wed" />
 
-        <RadioButton
-            android:id="@+id/friday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/fri" />
+            <RadioButton
+                android:id="@+id/thursday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/thu" />
 
-        <RadioButton
-            android:id="@+id/saturday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sat" />
+            <RadioButton
+                android:id="@+id/friday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fri" />
 
-        <RadioButton
-            android:id="@+id/sunday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sun" />
+            <RadioButton
+                android:id="@+id/saturday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sat" />
 
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/sunday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sun" />
+
+        </RadioGroup>
+    </LinearLayout>
+
 
     <EditText
         android:id="@+id/task_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/task_week"
+        android:layout_below="@+id/radioLayout"
         android:layout_marginTop="12dp"
         android:hint="@string/task_description"
         android:imeOptions="actionDone"

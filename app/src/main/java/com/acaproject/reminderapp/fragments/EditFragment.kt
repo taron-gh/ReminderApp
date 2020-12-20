@@ -57,16 +57,16 @@ class EditFragment(val task: Task) :Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val calendar = Calendar.getInstance()
+        val radioButtonID: Int = task_week.checkedRadioButtonId
 
         task_name.setText(task.name)
         task_description.setText(task.description)
         task_checkBox.isChecked=task.repeatable
-        val calendar = Calendar.getInstance()
         calendar.timeInMillis = task.originalTime
         task_timePicker.minute=calendar.get(Calendar.MINUTE)
         task_timePicker.hour=calendar.get(Calendar.HOUR)
 
-        val radioButtonID: Int = task_week.checkedRadioButtonId
 
 
         task_cancelBtn.setOnClickListener {
