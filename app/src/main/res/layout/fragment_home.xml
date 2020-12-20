@@ -15,7 +15,7 @@
         android:layout_height="48dp"
         android:orientation="horizontal">
 
-        <Spinner
+        <com.acaproject.reminderapp.fragments.SameSelectionSpinner
             android:id="@+id/spinner_today"
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -25,7 +25,7 @@
             android:padding="5dp"
             />
 
-        <Spinner
+        <com.acaproject.reminderapp.fragments.SameSelectionSpinner
             android:id="@+id/spinner_category"
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -35,7 +35,7 @@
             android:padding="5dp"
             />
 
-        <Spinner
+        <com.acaproject.reminderapp.fragments.SameSelectionSpinner
             android:id="@+id/spinner_week"
             android:layout_width="match_parent"
             android:layout_height="48dp"
