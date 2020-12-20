@@ -245,6 +245,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
             setMessage("Are you sure you want to delete this task?")
             setPositiveButton("Ok") { _: DialogInterface, _: Int ->
                 GlobalScope.launch { TaskManager.removeTask(task) }
+                taskAdapter.removeListItem(position)
             }
             setNeutralButton("Cancel", null)
             setCancelable(false)

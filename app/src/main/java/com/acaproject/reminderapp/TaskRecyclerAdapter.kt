@@ -86,11 +86,14 @@ class TaskRecyclerAdapter(
             tasks=list as MutableList<Task>
             notifyDataSetChanged()
         }
-
     }
     fun updateListItem (position: Int, task: Task) {
         tasks[position] = task
         notifyDataSetChanged()
+    }
+    fun removeListItem (position: Int) {
+        tasks.removeAt(position)
+        notifyItemRemoved(position)
     }
 
 }

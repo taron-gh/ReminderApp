@@ -64,8 +64,16 @@ class EditFragment(val task: Task) :Fragment() {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = task.originalTime
         task_timePicker.minute=calendar.get(Calendar.MINUTE)
-        task_timePicker.hour=calendar.get(Calendar.HOUR)
-
+        task_timePicker.hour=calendar.get(Calendar.HOUR_OF_DAY)
+        when(calendar.get(Calendar.DAY_OF_WEEK)){
+            Calendar.MONDAY -> monday.isChecked = true
+            Calendar.TUESDAY -> tuesday.isChecked = true
+            Calendar.WEDNESDAY -> wednesday.isChecked = true
+            Calendar.THURSDAY -> thursday.isChecked = true
+            Calendar.FRIDAY -> friday.isChecked = true
+            Calendar.SATURDAY -> saturday.isChecked = true
+            Calendar.SUNDAY -> sunday.isChecked = true
+        }
         val radioButtonID: Int = task_week.checkedRadioButtonId
 
 
