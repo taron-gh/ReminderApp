@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.acaproject.reminderapp.Alarms
+import com.acaproject.reminderapp.BackupConverter
 import com.acaproject.reminderapp.FragmentControl
 import com.acaproject.reminderapp.R
 import kotlinx.android.synthetic.main.activity_main.*
@@ -50,6 +51,7 @@ class SettingsFragment : Fragment() {
                 Alarms.minutesBeforeAlarms = s.toString().toInt()
             }
         })
+        exportButton.setOnClickListener { BackupConverter.createBackup() }
     }
     override fun onResume() {
         super.onResume()
