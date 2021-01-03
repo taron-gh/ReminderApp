@@ -57,7 +57,7 @@ class FloatingFragment:Fragment() {
            // Toast.makeText(context, "ok button clicked", Toast.LENGTH_SHORT).show()
             val radioButtonID: Int = task_week.checkedRadioButtonId
 
-            var chosenDayOfWeek: Int = 0
+            var chosenDayOfWeek = 0
             if(radioButtonID != -1 && task_spinner.selectedItem != null){
                 when(radioButtonID){
                     R.id.monday -> chosenDayOfWeek = Calendar.MONDAY
