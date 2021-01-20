@@ -6,9 +6,12 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -34,6 +37,18 @@ class EditFragment(val task: Task) :Fragment() {
 
     }
 
+    private val textWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+        }
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (s?.length == 10) {
+                Toast.makeText(context, "Maximum Limit Reached", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val bundle = this.arguments
@@ -48,9 +63,11 @@ class EditFragment(val task: Task) :Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.add_task_page, container, false)
+        val v:View = inflater.inflate(R.layout.add_task_page, container, false)
+        val name = v.findViewById(R.id.task_name) as EditText
+        name.addTextChangedListener(textWatcher)
+        return v
     }
-
 
 
     @RequiresApi(Build.VERSION_CODES.M)
