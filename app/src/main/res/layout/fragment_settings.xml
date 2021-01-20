@@ -6,30 +6,34 @@
     android:orientation="vertical"
     tools:context=".fragments.SettingsFragment">
 
-
-    <EditText
-        android:id="@+id/timeEditText"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:hint="minutes before notification"
-        />
-
-    <Button
-        android:id="@+id/importButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:background="@drawable/button_style"
-        android:text="@string/import_data"
-        android:textColor="#fff" />
+        android:weightSum="10">
+        <TextView
+            android:text="Minutes before notification"
+            android:gravity="center_vertical"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"/>
+        <EditText
+            android:id="@+id/timeEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:text="5"
+            android:layout_weight="8"/>
+    </LinearLayout>
 
     <Button
         android:id="@+id/exportButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_margin="20dp"
         android:background="@drawable/button_style"
         android:text="@string/export_data"
         android:textColor="#fff" />

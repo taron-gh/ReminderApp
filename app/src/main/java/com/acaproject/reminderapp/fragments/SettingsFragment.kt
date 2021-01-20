@@ -2,13 +2,19 @@ package com.acaproject.reminderapp.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.acaproject.reminderapp.Alarms
+import com.acaproject.reminderapp.BackupConverter
 import com.acaproject.reminderapp.FragmentControl
 import com.acaproject.reminderapp.R
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.android.synthetic.main.list_item.*
 import java.lang.IllegalStateException
 
 class SettingsFragment : Fragment() {
@@ -36,6 +42,17 @@ class SettingsFragment : Fragment() {
 
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        timeEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                Alarms.minutesBeforeAlarms = s.toString().toInt()
+            }
+        })
+        exportButton.setOnClickListener { BackupConverter.createBackup() }
+    }
     override fun onResume() {
         super.onResume()
         fragmentControl.updateToolBar("Settings", true)

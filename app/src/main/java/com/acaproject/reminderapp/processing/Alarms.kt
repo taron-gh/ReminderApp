@@ -13,14 +13,20 @@ import java.util.*
 object Alarms {
     private lateinit var context: Context
     private lateinit var alarmManager: AlarmManager
+    var minutesBeforeAlarms: Int = 0
     fun init(context1: Context) {
         context = context1
         alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     }
-
     fun setAlarm(task: Task) {
         val primaryKey = task.taskId
-        val timeInMillis = task.originalTime
+        var timeInMillis = task.originalTime
+        val calendar = Calendar.getInstance()
+        if(minutesBeforeAlarms != 0){
+            calendar.timeInMillis = timeInMillis
+            calendar.add(Calendar.MINUTE, 0 - 2 * minutesBeforeAlarms)
+        }
+        timeInMillis = calendar.timeInMillis
         val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
             addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
             putExtra("id", primaryKey)
@@ -44,12 +50,17 @@ object Alarms {
 
     fun setPostponedAlarm(task: Task) {
         val primaryKey = task.taskId
-        val timeInMillis = task.currentTime
+        var timeInMillis = task.currentTime
+        val calendar = Calendar.getInstance()
+        if(minutesBeforeAlarms != 0){
+            calendar.timeInMillis = timeInMillis
+            calendar.add(Calendar.MINUTE, 0 - 2 * minutesBeforeAlarms)
+        }
+        timeInMillis = calendar.timeInMillis
         val intent: Intent = Intent(context, NotificationReceiver::class.java).apply {
             addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
             putExtra("id", primaryKey)
         }
-
         val pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setExactAndAllowWhileIdle(
