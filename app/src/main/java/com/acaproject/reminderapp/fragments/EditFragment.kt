@@ -139,9 +139,6 @@ class EditFragment(val task: Task) :Fragment() {
                 }
 
 
-
-
-
             }else{
                 Toast.makeText(activity, "Please fill all fields", Toast.LENGTH_SHORT).show()
             }
