@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.list_item.view.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -45,6 +46,8 @@ class TaskRecyclerAdapter(
         @SuppressLint("SetTextI18n")
         fun bind(task: Task, listener: OnTaskClickListener, position: Int) {
             val calendar = Calendar.getInstance()
+            val timeFormat = SimpleDateFormat("hh:mm")
+
             val context = itemView.context
             val daysOfWeek = listOf(
                 context.getString(R.string.sunday),
@@ -56,10 +59,12 @@ class TaskRecyclerAdapter(
                 context.getString(R.string.saturday)
             )
             calendar.timeInMillis = task.currentTime
+
             taskTextView.text = task.name
+
             dateTimeTextView.text = "${daysOfWeek[calendar.get(Calendar.DAY_OF_WEEK) - 1]}" +
-                    " ${calendar.get(Calendar.HOUR_OF_DAY)} " +
-                    "${calendar.get(Calendar.MINUTE)} " +
+                    " ${timeFormat.format(calendar.time)} " +
+
                     amPm(calendar.get(java.util.Calendar.AM_PM))
 
             itemView.setOnClickListener {

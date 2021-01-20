@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +17,7 @@ import com.acaproject.reminderapp.R
 import com.acaproject.reminderapp.Task
 import com.acaproject.reminderapp.TaskManager
 import kotlinx.android.synthetic.main.add_task_page.*
+import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -40,13 +43,32 @@ class FloatingFragment:Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        task_name.addTextChangedListener(textWatcher)
         return inflater.inflate(R.layout.add_task_page, container, false)
+
     }
+
+   private val textWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+        }
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            if (start == 5) {
+                Toast.makeText(context, "Maximum Limit Reached", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        task_name.addTextChangedListener(textWatcher)
 
         task_cancelBtn.setOnClickListener {
             fragmentManager?.popBackStack()
