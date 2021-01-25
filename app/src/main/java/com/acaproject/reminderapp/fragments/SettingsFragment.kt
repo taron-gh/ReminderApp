@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,11 +49,16 @@ class SettingsFragment : Fragment() {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                Alarms.minutesBeforeAlarms = s.toString().toInt()
+                Log.i("TAG", "text changed")
+                if(s.toString() != ""){
+                    Alarms.minutesBeforeAlarms = s.toString().toInt()
+                    Log.i("TAG", "value changed to: " + Alarms.minutesBeforeAlarms)
+                }
             }
         })
         exportButton.setOnClickListener { BackupConverter.createBackup() }
     }
+
     override fun onResume() {
         super.onResume()
         fragmentControl.updateToolBar("Settings", true)
