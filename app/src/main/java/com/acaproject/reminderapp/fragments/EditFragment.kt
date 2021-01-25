@@ -1,7 +1,6 @@
 package com.acaproject.reminderapp.fragments
 
 import android.R.attr.defaultValue
-import android.R.attr.key
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
@@ -11,6 +10,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
@@ -74,7 +74,11 @@ class EditFragment(val task: Task) :Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        task_spinner.setSelection(
+            (task_spinner.adapter as ArrayAdapter<String?>).getPosition(
+                task.category
+            )
+        )
         task_name.setText(task.name)
         task_description.setText(task.description)
         task_checkBox.isChecked=task.repeatable

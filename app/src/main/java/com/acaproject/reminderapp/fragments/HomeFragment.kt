@@ -57,16 +57,6 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
     }
 
-    private fun floatingBtn() {
-        floatingBtn.setOnClickListener {
-
-            activity?.supportFragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-            val floatingFragment = FloatingFragment()
-            fragmentControl.openPage("Add Task", true, floatingFragment)
-
-
-        }
-    }
 
     private val categorySpinnerListener = object : AdapterView.OnItemSelectedListener {
         override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -141,6 +131,17 @@ class HomeFragment : Fragment(), OnTaskClickListener {
             }
         }
 
+    }
+
+    private fun floatingBtn() {
+        floatingBtn.setOnClickListener {
+
+            activity?.supportFragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            val floatingFragment = FloatingFragment()
+            fragmentControl.openPage("Add Task", true, floatingFragment)
+
+
+        }
     }
 
     override fun onAttach(context: Context) {
