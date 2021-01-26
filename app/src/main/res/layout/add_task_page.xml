@@ -110,6 +110,7 @@
             android:layout_below="@+id/radioLayout"
             android:layout_marginTop="12dp"
             android:hint="@string/task_description"
+            android:scrollHorizontally="true"
             android:imeOptions="actionDone"
             android:singleLine="true" />
 

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="22dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:text="Description"
+        style="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/dialog_category"
+        android:layout_below="@+id/dialog_title"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_marginTop="20dp"
+        android:text="Category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <TextView
+        android:id="@+id/dialog_checkBox"
+        android:layout_below="@+id/dialog_category"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:text="Repeatable: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/dialog_description"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/dialog_checkBox"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:textSize="20sp"
+        android:maxLines="2"
+        />
+
+    <LinearLayout
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_description"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/dialog_okBtn"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight=".3"
+            android:background="@drawable/button_style"
+            android:text="@string/ok"
+            android:textColor="#fff"
+            />
+    </LinearLayout>
+</RelativeLayout>

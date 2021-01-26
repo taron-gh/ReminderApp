@@ -2,7 +2,10 @@ package com.acaproject.reminderapp.fragments
 
 import android.R.attr.fragment
 import android.R.attr.key
+import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
@@ -12,10 +15,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.acaproject.reminderapp.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.dialog_layout.*
+import kotlinx.android.synthetic.main.dialog_layout.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -135,12 +141,9 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
     private fun floatingBtn() {
         floatingBtn.setOnClickListener {
-
             activity?.supportFragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
             val floatingFragment = FloatingFragment()
             fragmentControl.openPage("Add Task", true, floatingFragment)
-
-
         }
     }
 
@@ -149,7 +152,6 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         if (context is FragmentControl) {
             fragmentControl = context
         } else throw IllegalStateException("Activity must implement fragmentControl")
-
     }
 
     private lateinit var taskAdapter: TaskRecyclerAdapter
@@ -229,15 +231,29 @@ class HomeFragment : Fragment(), OnTaskClickListener {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onItemClick(task: Task) {
-        val builder = AlertDialog.Builder(activity)
-        builder.apply {
-            setTitle("Description")
-            setMessage(task.description)
-            setNeutralButton("Ok", null)
+        val dialog = context?.let { Dialog(it) }
+        dialog?.apply {
+            setContentView(R.layout.dialog_layout)
+            window?.attributes?.windowAnimations = R.style.animation
+            window?.setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
+            dialog_okBtn.setOnClickListener {
+                dialog.dismiss()
+            }
+            dialog_category.text="Category: ${task.category}"
+            if(task.repeatable){
+                dialog_checkBox.text="Repeatable: Yes"
+            }
+            else dialog_checkBox.text="Repeatable: No"
+            if (task.description.isBlank()){
+                dialog_description.text = "Description: Task has no description"
+            }
+            else dialog_description.text= "Description: ${task.description}"
             setCancelable(false)
             show()
         }
+
     }
 
     override fun onItemLongClick(task: Task, position: Int) {
