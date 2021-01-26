@@ -27,8 +27,8 @@ class SettingsFragment : Fragment() {
         if (context is FragmentControl) {
             fragmentControl = context
         } else throw IllegalStateException("Activity must implement fragmentControl")
-
         fragmentControl.updateToolBar("Settings", true)
+
     }
 
 
@@ -45,6 +45,7 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        timeEditText.text = Editable.Factory.getInstance().newEditable(Alarms.minutesBeforeAlarms.toString())
         timeEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}

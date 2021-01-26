@@ -44,6 +44,7 @@ class NotificationService : Service() {
             }
             Log.i("Service", "3")
         }else if(intent?.action == "cancel"){
+
             GlobalScope.launch {
                 job.join()
                 withContext(Dispatchers.IO){
