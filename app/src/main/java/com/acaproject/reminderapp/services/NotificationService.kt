@@ -77,17 +77,28 @@ class NotificationService : Service() {
                 PendingIntent.getService(this, 0, postponeIntent, PendingIntent.FLAG_UPDATE_CURRENT)
             val cancelPendingIntent =
                 PendingIntent.getService(this, 0, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val context = this
+            GlobalScope.launch {
+                val task = TaskManager.getTask(taskId!!)
+                val description: String
+                if(task.description.isBlank()){
+                    description = "This task has no description."
+                }else{
+                    description = task.description
+                }
+                val notification = NotificationCompat.Builder(context, CHANNEL_DEFAULT)
+                    .setContentTitle(task.name + " (" + task.category + ")")
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setContentText(description)
+                    .addAction(0, "Done!", donePendingIntent)
+                    .addAction(0, "Postpone", postponePendingIntent)
+                    .addAction(0, "Cancel", cancelPendingIntent)
+                    .build()
+                Log.i("Service", "5")
+                startForeground(123, notification)
+            }
 
-            val notification = NotificationCompat.Builder(this, CHANNEL_DEFAULT)
-                .setContentTitle("Wake up")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .addAction(0, "Done!", donePendingIntent)
-                .addAction(0, "Postpone", postponePendingIntent)
-                .addAction(0, "Cancel", cancelPendingIntent)
-                .build()
-            Log.i("Service", "5")
-            startForeground(123, notification)
         }
         return START_STICKY
     }
