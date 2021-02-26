@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#49B8E1</color>
+    <color name="colorPrimary">@color/reminder_blue</color>
+    <color name="colorOnPrimary">@color/white</color>
+    <color name="colorOnSurface">@color/white</color>
+    <color name="colorSecondary">@color/reminder_blue</color>
+    <color name="colorOnSecondary">@color/white</color>
     <color name="colorPrimaryDark">#070E3C</color>
-    <color name="colorAccent">@color/colorPrimary</color>
-    <color name="floatingButton">@color/colorPrimary</color>
+    <color name="colorAccent">@color/reminder_blue</color>
+    <color name="floatingButton">@color/reminder_blue</color>
     <color name="black">#000000</color>
+    <color name="spinner">#070288D1</color>
+    <color name="reminder_blue">#49B8E1</color>
     <color name="white">#ffffff</color>
+    <color name="mainBackground">#ffffff</color>
 </resources>

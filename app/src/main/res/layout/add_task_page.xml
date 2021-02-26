@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fillViewport="true"
-    android:padding="16dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:padding="16dp">
 
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,22 +15,29 @@
         android:gravity="center"
         android:padding="5dp">
 
-
-        <Spinner
-            android:id="@+id/task_spinner"
+        <LinearLayout
+            android:id="@+id/spinnerLinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:entries="@array/Categories" />
+            android:layout_height="wrap_content"
+            android:background="@color/spinner">
+
+            <Spinner
+                android:id="@+id/task_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+
+                android:entries="@array/Categories" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/task_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/task_spinner"
+            android:layout_below="@+id/spinnerLinearLayout"
             android:layout_marginTop="12dp"
             android:hint="@string/task_name"
-            android:maxLength="10"
             android:imeOptions="actionDone"
+            android:maxLength="10"
             android:singleLine="true" />
 
         <TimePicker
@@ -43,13 +49,11 @@
             android:timePickerMode="spinner" />
 
 
-
         <LinearLayout
             android:id="@+id/radioLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/task_timePicker"
-            >
+            android:layout_below="@+id/task_timePicker">
 
             <RadioGroup
                 android:id="@+id/task_week"
@@ -57,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
+
                 <RadioButton
                     android:id="@+id/monday"
                     android:layout_width="wrap_content"
@@ -110,8 +115,8 @@
             android:layout_below="@+id/radioLayout"
             android:layout_marginTop="12dp"
             android:hint="@string/task_description"
-            android:scrollHorizontally="true"
             android:imeOptions="actionDone"
+            android:scrollHorizontally="true"
             android:singleLine="true" />
 
         <CheckBox

@@ -1,15 +1,14 @@
-package com.acaproject.reminderapp
+package com.acaproject.reminderapp.ui
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.acaproject.reminderapp.R
+import com.acaproject.reminderapp.Task
 import kotlinx.android.synthetic.main.list_item.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -65,7 +64,7 @@ class TaskRecyclerAdapter(
             dateTimeTextView.text = "${daysOfWeek[calendar.get(Calendar.DAY_OF_WEEK) - 1]}" +
                     " ${timeFormat.format(calendar.time)} " +
 
-                    amPm(calendar.get(java.util.Calendar.AM_PM))
+                    amPm(calendar.get(Calendar.AM_PM))
 
             itemView.setOnClickListener {
                 listener.onItemClick(task)
@@ -97,7 +96,7 @@ class TaskRecyclerAdapter(
         notifyDataSetChanged()
     }
     fun removeListItem (position: Int) {
-        tasks.removeAt(position)
+        tasks.removeAt(position) // may produce IndexOutOfBoundsException
         notifyItemRemoved(position)
     }
 
@@ -120,6 +119,6 @@ private fun amPm(hour: Int): String {
 interface OnTaskClickListener {
     fun onItemClick(task: Task)
     fun onItemLongClick(task: Task, position: Int)
-    fun editTaskPage(task:Task, position: Int)
+    fun editTaskPage(task: Task, position: Int)
 
 }

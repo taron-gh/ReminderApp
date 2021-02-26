@@ -16,46 +16,47 @@
 
 
         <TextView
-            android:id="@+id/taskTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:maxLength="10"
-            android:text="Task"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/dateTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="Date/Time"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/editBtn"
-            app:layout_constraintStart_toEndOf="@+id/taskTextView"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.888" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/editBtn"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/edit_icon"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/dateTimeTextView"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/dateTimeTextView"
+            app:layout_constraintTop_toTopOf="@+id/dateTimeTextView"
+            app:layout_constraintVertical_bias="0.666" />
+
+        <TextView
+            android:id="@+id/taskTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Task"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/dateTimeTextView"
+            app:layout_constraintHorizontal_bias="0.035"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

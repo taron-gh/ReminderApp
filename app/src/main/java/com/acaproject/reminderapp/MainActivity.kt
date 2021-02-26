@@ -3,6 +3,7 @@ package com.acaproject.reminderapp
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -11,12 +12,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import androidx.room.Room
 import com.acaproject.reminderapp.fragments.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -31,7 +34,7 @@ interface FragmentControl {
 
 const val CHANNEL_DEFAULT = "channel"
 
-class MainActivity() : AppCompatActivity(), FragmentControl {
+class MainActivity : AppCompatActivity(), FragmentControl {
     private val helpFragment = HelpFragment()
     private val settingsFragment = SettingsFragment()
     private val homeFragment = HomeFragment()
@@ -41,7 +44,7 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
         setContentView(R.layout.activity_main)
         BackupConverter.checkOnStart(this@MainActivity)
         setSupportActionBar(toolBar)
-        openPage("Home", false, homeFragment)
+        openPage("Reminder", false, homeFragment)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -91,10 +94,10 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
     }
 
     override fun updateToolBar(title: String, hasBack: Boolean) {
-        toolBar.title = title
+        toolBar?.title = title
         if (hasBack) {
-            toolBar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
-            toolBar.setNavigationOnClickListener { onBackPressed() }
+            toolBar?.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
+            toolBar?.setNavigationOnClickListener { onBackPressed() }
         } else {
             toolBar.navigationIcon = null
         }
@@ -105,13 +108,14 @@ class MainActivity() : AppCompatActivity(), FragmentControl {
 
     }
 
+
     override fun editTask(task: Task, position: Int) {
 
         homeFragment.edit(task, position)
     }
 
 
-    private fun init(){
+    private fun init() {
         TaskManager.init(this)
         Log.i("TAG", "init done")
         Alarms.init(this)

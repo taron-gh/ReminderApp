@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#EFEFEF"
+    android:background="@color/mainBackground"
     android:orientation="vertical"
     tools:context=".fragments.HomeFragment">
 
@@ -13,6 +13,7 @@
         android:id="@+id/spinners"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:background="@color/spinner"
         android:orientation="horizontal">
 
         <com.acaproject.reminderapp.fragments.SameSelectionSpinner
@@ -61,7 +62,7 @@
         android:id="@+id/bottomNavBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_nav_menu" />
 
@@ -77,7 +78,7 @@
         android:layout_alignParentRight="true"
         android:layout_above="@+id/bottomNavBar"
         android:src="@drawable/add_floatingbtn"
-        app:backgroundTint="@color/colorPrimary"
+
         app:fabSize="normal"/>
 
 

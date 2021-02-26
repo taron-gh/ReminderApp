@@ -1,7 +1,5 @@
 package com.acaproject.reminderapp.fragments
 
-import android.R.attr.fragment
-import android.R.attr.key
 import android.annotation.SuppressLint
 import android.app.ActionBar
 import android.app.AlertDialog
@@ -15,10 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.acaproject.reminderapp.*
+import com.acaproject.reminderapp.ui.OnTaskClickListener
+import com.acaproject.reminderapp.ui.TaskRecyclerAdapter
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.dialog_layout.*
 import kotlinx.android.synthetic.main.dialog_layout.view.*
@@ -26,7 +25,6 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.*
 import java.util.*
 import java.lang.IllegalStateException
-import java.text.FieldPosition
 
 
 class HomeFragment : Fragment(), OnTaskClickListener {
@@ -219,7 +217,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
 
     override fun onResume() {
         super.onResume()
-        fragmentControl.updateToolBar("Home", false)
+        fragmentControl.updateToolBar("Reminder", false)
     }
 
     private fun initRecyclerView() {
@@ -262,7 +260,7 @@ class HomeFragment : Fragment(), OnTaskClickListener {
             setMessage("Are you sure you want to delete this task?")
             setPositiveButton("Ok") { _: DialogInterface, _: Int ->
                 GlobalScope.launch { TaskManager.removeTask(task) }
-                taskAdapter.removeListItem(position)
+                taskAdapter.removeListItem(position) // should get checked
             }
             setNeutralButton("Cancel", null)
             setCancelable(false)
