@@ -36,8 +36,8 @@
             android:layout_below="@+id/spinnerLinearLayout"
             android:layout_marginTop="12dp"
             android:hint="@string/task_name"
+            android:maxLength="20"
             android:imeOptions="actionDone"
-            android:maxLength="10"
             android:singleLine="true" />
 
         <TimePicker

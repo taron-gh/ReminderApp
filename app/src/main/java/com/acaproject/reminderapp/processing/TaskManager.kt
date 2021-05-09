@@ -1,5 +1,6 @@
 package com.acaproject.reminderapp
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.room.Entity
@@ -7,6 +8,7 @@ import androidx.room.PrimaryKey
 import androidx.room.Room
 import java.util.*
 
+@SuppressLint("StaticFieldLeak")
 object TaskManager {
     private lateinit var context: Context
     private lateinit var db: Database
